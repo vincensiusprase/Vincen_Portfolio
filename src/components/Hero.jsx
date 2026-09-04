@@ -3,7 +3,7 @@ import React from 'react'
 const stats = [
   { value: '5+', label: 'Years', sub: 'Experience' },
   { value: '10+', label: 'Projects', sub: 'Delivered' },
-  { value: 'GCP', label: 'Cloud', sub: 'Stack' },
+  { value: '3', label: 'Certifications', sub: 'Holder' },
 ]
 
 export default function Hero() {
@@ -93,11 +93,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-        <span className="text-xs text-gray-600 tracking-widest uppercase">Scroll</span>
-        <div className="w-px h-8 bg-gradient-to-b from-gray-600 to-transparent" />
-      </div>
+      
     </section>
   )
 }

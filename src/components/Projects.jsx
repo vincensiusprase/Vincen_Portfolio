@@ -11,7 +11,8 @@ const projects = [
     tagColors: ['violet', 'cyan', 'sky', 'emerald'],
     accent: '#8b5cf6',
     icon: '🤖',
-    videoUrl: '/videos/recruitment-flow.mp4', // Mengarahkan ke video Remotion
+    link: 'https://github.com/vincensiusprase/App_Script_Personal_Project',
+    videoUrl: '/videos/recruitment-flow.mp4', // Pemicu modal demo
   },
   {
     category: 'Data Architecture & GCP',
@@ -130,23 +131,21 @@ export default function Projects() {
       <div className="flex flex-col gap-5 mb-16">
         {projects.map((project, i) => {
           const ref = useReveal(i * 100)
-          
-          const handleClick = (e) => {
-            if (project.videoUrl) {
-              e.preventDefault()
-              setSelectedVideo({ url: project.videoUrl, name: project.name })
-            }
+
+          const handleDemoClick = (e) => {
+            e.preventDefault()
+            e.stopPropagation() // Mencegah klik membuka link GitHub
+            setSelectedVideo({ url: project.videoUrl, name: project.name })
           }
 
           return (
             <a
               key={i}
-              href={project.link || '#'}
-              target={project.videoUrl ? '_self' : '_blank'}
+              href={project.link}
+              target="_blank"
               rel="noreferrer"
-              onClick={handleClick}
               ref={ref}
-              className="reveal glow-card block rounded-2xl p-6 group cursor-pointer transition-all duration-300 hover:border-cyan-500/30"
+              className="reveal glow-card block rounded-2xl p-6 group cursor-pointer transition-all duration-300 hover:border-cyan-500/30 relative"
               style={{
                 background: 'rgba(255,255,255,0.02)',
                 border: '1px solid rgba(255,255,255,0.08)',
@@ -159,11 +158,19 @@ export default function Projects() {
                     {project.category}
                   </span>
                 </div>
-                {project.videoUrl ? (
-                  <span className="text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-full flex items-center gap-1 group-hover:scale-105 transition-transform">
-                    ▶ Demo
-                  </span>
-                ) : (
+
+                <div className="flex items-center gap-2">
+                  {/* Tombol Demo (Hanya Muncul Jika Memiliki videoUrl) */}
+                  {project.videoUrl && (
+                    <button
+                      onClick={handleDemoClick}
+                      className="text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 px-2.5 py-1 rounded-full flex items-center gap-1.5 transition-all font-semibold z-10"
+                    >
+                      <span>▶</span> Demo
+                    </button>
+                  )}
+
+                  {/* Icon External Link ke GitHub (Seragam untuk Semua Proyek) */}
                   <svg
                     className="w-4 h-4 text-gray-600 group-hover:text-white transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     fill="none"
@@ -177,7 +184,7 @@ export default function Projects() {
                       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                     />
                   </svg>
-                )}
+                </div>
               </div>
 
               <div
@@ -293,7 +300,6 @@ export default function Projects() {
             className="relative w-full max-w-3xl bg-slate-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-white/10 bg-slate-950/50">
               <h3 className="text-sm font-bold text-white">
                 {selectedVideo.name} — Animation Demo
@@ -306,7 +312,6 @@ export default function Projects() {
               </button>
             </div>
 
-            {/* Video Player */}
             <div className="p-4 bg-black flex justify-center">
               <video
                 src={selectedVideo.url}
