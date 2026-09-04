@@ -11,7 +11,7 @@ const projects = [
     tagColors: ['violet', 'cyan', 'sky', 'emerald'],
     accent: '#8b5cf6',
     icon: '🤖',
-    link: 'https://github.com/vincensiusprase/App_Script_Personal_Project',
+    videoUrl: '/videos/recruitment-flow.mp4', // Mengarahkan ke video Remotion
   },
   {
     category: 'Data Architecture & GCP',
@@ -116,25 +116,35 @@ const tagColorMap = {
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState('All')
+  const [selectedVideo, setSelectedVideo] = useState(null)
 
   const filteredMoreProjects = activeCategory === 'All'
     ? moreProjects
     : moreProjects.filter(p => p.category === activeCategory)
 
   return (
-    <section id="projects" className="px-6 py-20 max-w-2xl mx-auto">
+    <section id="projects" className="px-6 py-20 max-w-2xl mx-auto relative">
       <SectionHeader title="Projects" />
 
       {/* Top 6 Main Projects */}
       <div className="flex flex-col gap-5 mb-16">
         {projects.map((project, i) => {
           const ref = useReveal(i * 100)
+          
+          const handleClick = (e) => {
+            if (project.videoUrl) {
+              e.preventDefault()
+              setSelectedVideo({ url: project.videoUrl, name: project.name })
+            }
+          }
+
           return (
             <a
               key={i}
-              href={project.link}
-              target="_blank"
+              href={project.link || '#'}
+              target={project.videoUrl ? '_self' : '_blank'}
               rel="noreferrer"
+              onClick={handleClick}
               ref={ref}
               className="reveal glow-card block rounded-2xl p-6 group cursor-pointer transition-all duration-300 hover:border-cyan-500/30"
               style={{
@@ -149,19 +159,25 @@ export default function Projects() {
                     {project.category}
                   </span>
                 </div>
-                <svg
-                  className="w-4 h-4 text-gray-600 group-hover:text-white transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                  />
-                </svg>
+                {project.videoUrl ? (
+                  <span className="text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-full flex items-center gap-1 group-hover:scale-105 transition-transform">
+                    ▶ Demo
+                  </span>
+                ) : (
+                  <svg
+                    className="w-4 h-4 text-gray-600 group-hover:text-white transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                )}
               </div>
 
               <div
@@ -194,7 +210,7 @@ export default function Projects() {
         })}
       </div>
 
-      {/* More Projects Section (Dibawah Projects Utama) */}
+      {/* More Projects Section */}
       <div className="pt-8 border-t border-white/10">
         <h3 className="text-lg font-bold text-white mb-2">More Projects</h3>
         <p className="text-xs text-gray-400 mb-6">
@@ -266,6 +282,43 @@ export default function Projects() {
           ))}
         </div>
       </div>
+
+      {/* VIDEO MODAL POPUP */}
+      {selectedVideo && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          onClick={() => setSelectedVideo(null)}
+        >
+          <div 
+            className="relative w-full max-w-3xl bg-slate-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-slate-950/50">
+              <h3 className="text-sm font-bold text-white">
+                {selectedVideo.name} — Animation Demo
+              </h3>
+              <button
+                onClick={() => setSelectedVideo(null)}
+                className="text-gray-400 hover:text-white text-sm bg-white/5 hover:bg-white/10 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Video Player */}
+            <div className="p-4 bg-black flex justify-center">
+              <video
+                src={selectedVideo.url}
+                autoPlay
+                loop
+                controls
+                className="w-full rounded-xl border border-white/10 shadow-lg"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
