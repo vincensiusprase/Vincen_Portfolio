@@ -39,21 +39,23 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* Headline Utama: Vincen Portfolio */}
-        <h1 className="text-center text-4xl sm:text-5xl font-black leading-tight tracking-tight mb-4">
-          <span className="gradient-text">Vincen</span>
-          <br />
-          <span className="text-white">Portfolio</span>
-        </h1>
+        {/* Hero Headline Section */}
+        <div className="text-center max-w-3xl mx-auto mb-6">
+          {/* Nama Utama */}
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+            <span className="gradient-text">Vincensius Prasetyo Adi</span>
+          </h1>
 
-        {/* Sub-headline Deskriptif */}
-        <p className="text-center text-sm sm:text-base text-gray-400 leading-relaxed mb-8 px-4">
-          Data & Digital Transformation Specialist
-          <br />
-          <span className="text-xs text-gray-500 font-medium">
-            GCP • BigQuery • Dataform • Power BI • Looker Studio • Python
-          </span>
-        </p>
+          {/* Target Role Utama (Lebih Ringkas & Focused) */}
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-3">
+            Demand Planner & Manufacturing Data Specialist
+          </h2>
+
+          {/* Sub-headline / Core Competency Tagline */}
+          <p className="text-xs text-gray-500 font-mono tracking-wide text-center">
+            Demand Forecasting <span className="text-cyan-500">•</span> Inventory Optimization <span className="text-cyan-500">•</span> GCP BigQuery <span className="text-cyan-500">•</span> Dataform <span className="text-cyan-500">•</span> Python <span className="text-cyan-500">•</span> Apps Script
+          </p>
+        </div>
 
         {/* Action Buttons */}
         <div className="flex gap-3 justify-center mb-12">

@@ -24,7 +24,7 @@ const skillGroups = [
       {
         subLabel: 'Data & Analytics',
         items: [
-          'BigQuery (Partitioning & Clustering)',
+          'BigQuery',
           'Dataform',
           'Dataflow',
           'Cloud Storage',
@@ -34,6 +34,10 @@ const skillGroups = [
       {
         subLabel: 'Compute & Operations',
         items: ['Cloud Run', 'Cloud Scheduler', 'IAM', 'Cloud Billing', 'Monitoring'],
+      },
+      {
+        subLabel: 'Other GCP Services',
+        items: ['Document AI', 'Maps API'],
       },
     ],
   },
@@ -49,15 +53,15 @@ const skillGroups = [
       {
         subLabel: 'Advanced Spreadsheets',
         items: [
-          'Dynamic Array Formulas (LAMBDA, MAP, REDUCE)',
-          'Google Sheets QUERY & XLOOKUP',
-          'Google Apps Script Automation',
+          'ARRAYFORMULA, LAMBDA, MAP, REDUCE, LET',
+          'QUERY & X-V-HLOOKUP',
+          'Nested IF, SWITCH, IFS'
         ],
       },
     ],
   },
   {
-    label: 'AI, Automation & Advanced Mining',
+    label: 'AI, Automation & No-Code/Low-Code Analytics',
     icon: '⚙️',
     color: 'violet',
     categories: [
@@ -82,7 +86,12 @@ const skillGroups = [
       },
       {
         subLabel: 'Digital Transformation & Strategy',
-        items: ['Industry 4.0 Roadmapping', 'Technology Evaluation', 'Strategic Planning'],
+        items: [
+          'Industry 4.0 Aspiration & Opportunity Formulation',
+          'Strategic Planning & Digital Roadmapping',
+          'Technology Pilot Project Execution',
+          'Solution & Impact Evaluation'
+        ],
       },
     ],
   },
@@ -170,7 +179,7 @@ export default function About() {
 
           <div ref={textRef} className="reveal">
             <p className="text-sm text-gray-400 leading-relaxed">
-              Data Analyst di PT Intan Safety Glass dengan 5+ tahun pengalaman gabungan di bidang Data, Supply Chain, & Digital Transformation. Berfokus pada end-to-end data pipeline, GCP infrastructure, BI analytics, dan otomatisasi berbasis AI.
+              Data Analyst at PT Intan Safety Glass leveraging 5+ years of combined expertise in Supply Chain, Data Engineering, and Digital Transformation. Specialized in building end-to-end data pipelines, optimizing GCP infrastructure, driving BI analytics, and engineering AI-based workflow automations.
             </p>
           </div>
         </div>
