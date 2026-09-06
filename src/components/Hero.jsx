@@ -48,7 +48,7 @@ export default function Hero() {
 
         {/* Sub-headline Deskriptif */}
         <p className="text-center text-sm sm:text-base text-gray-400 leading-relaxed mb-8 px-4">
-          Data Analyst & Pipeline Engineer
+          Data & Digital Transformation Specialist
           <br />
           <span className="text-xs text-gray-500 font-medium">
             GCP • BigQuery • Dataform • Power BI • Looker Studio • Python

@@ -5,64 +5,88 @@ const skillGroups = [
     label: 'Data Analysis & Programming',
     icon: '🐍',
     color: 'cyan',
-    skills: ['Python', 'Pandas', 'NumPy', 'SciPy', 'Matplotlib', 'SQL (Standard & Legacy)'],
+    categories: [
+      {
+        subLabel: 'Languages',
+        items: ['Python', 'SQL (Standard & Legacy)'],
+      },
+      {
+        subLabel: 'Libraries & Toolkits',
+        items: ['Pandas', 'NumPy', 'SciPy', 'Matplotlib'],
+      },
+    ],
   },
   {
     label: 'Google Cloud Platform (GCP)',
     icon: '☁️',
     color: 'sky',
-    skills: [
-      'BigQuery',
-      'Cloud Storage',
-      'Cloud Run',
-      'Dataform',
-      'Dataflow',
-      'Cloud Scheduler',
-      'IAM',
-      'Cloud Billing',
-      'Knowledge Catalog',
-      'Monitoring',
+    categories: [
+      {
+        subLabel: 'Data & Analytics',
+        items: [
+          'BigQuery (Partitioning & Clustering)',
+          'Dataform',
+          'Dataflow',
+          'Cloud Storage',
+          'Knowledge Catalog',
+        ],
+      },
+      {
+        subLabel: 'Compute & Operations',
+        items: ['Cloud Run', 'Cloud Scheduler', 'IAM', 'Cloud Billing', 'Monitoring'],
+      },
     ],
   },
   {
-    label: 'BI, Visualization & Spreadsheets',
+    label: 'BI, Visualization & Modern Spreadsheets',
     icon: '📊',
     color: 'emerald',
-    skills: [
-      'Power BI (DAX, Power Query)',
-      'Looker Studio',
-      'Conversational Analytics',
-      'Advanced Excel',
-      'Google Sheets',
+    categories: [
+      {
+        subLabel: 'BI & Analytics Tools',
+        items: ['Power BI', 'Looker Studio', 'Conversational Analytics'],
+      },
+      {
+        subLabel: 'Advanced Spreadsheets',
+        items: [
+          'Dynamic Array Formulas (LAMBDA, MAP, REDUCE)',
+          'Google Sheets QUERY & XLOOKUP',
+          'Google Apps Script Automation',
+        ],
+      },
     ],
   },
   {
-    label: 'AI, Automation & No-Code',
+    label: 'AI, Automation & Advanced Mining',
     icon: '⚙️',
     color: 'violet',
-    skills: [
-      'Prompting',
-      'Google Apps Script',
-      'API Integration',
-      'Document AI',
-      'RapidMiner',
-      'KNIME',
+    categories: [
+      {
+        subLabel: 'Automation & APIs',
+        items: ['Google Apps Script', 'API Integration', 'Prompt Engineering'],
+      },
+      {
+        subLabel: 'Document AI & Mining Tools',
+        items: ['Document AI', 'RapidMiner', 'KNIME'],
+      },
     ],
   },
   {
     label: 'Workspace Admin & Digital Strategy',
     icon: '🚀',
     color: 'amber',
-    skills: [
-      'Google Workspace Admin',
-      'User Management',
-      'Security Policies',
-      'Industry 4.0 Roadmapping',
-      'Technology Evaluation',
-      'Strategic Planning',
+    categories: [
+      {
+        subLabel: 'Workspace Administration',
+        items: ['Google Workspace Admin', 'User Management', 'Security Policies'],
+      },
+      {
+        subLabel: 'Digital Transformation & Strategy',
+        items: ['Industry 4.0 Roadmapping', 'Technology Evaluation', 'Strategic Planning'],
+      },
     ],
   },
-]
+];
 
 const colorMap = {
   cyan: 'text-cyan-300 bg-cyan-400/10 border-cyan-400/20 hover:bg-cyan-400/20',
@@ -84,6 +108,23 @@ function SkillBadge({ name, color, index }) {
   )
 }
 
+export function SectionHeader({ title }) {
+  return (
+    <div className="flex items-center gap-3 mb-8">
+      <span className="text-xs font-black text-cyan-400 uppercase tracking-widest">
+        {title}
+      </span>
+      <div
+        className="flex-1 h-px"
+        style={{
+          background:
+            'linear-gradient(90deg, rgba(6,182,212,0.4), transparent)',
+        }}
+      />
+    </div>
+  )
+}
+
 export default function About() {
   const titleRef = useReveal()
   const textRef = useReveal(100)
@@ -95,10 +136,8 @@ export default function About() {
 
       {/* Profil Section: Foto + Teks Singkat */}
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-8 items-center mb-12">
-        {/* Foto Tanpa Frame Bulat dengan Efek Glow Pemisah Background */}
         <div ref={photoRef} className="reveal sm:col-span-5 flex justify-center">
           <div className="relative group w-full max-w-[220px]">
-            {/* Ambient Background Glow (Memberikan efek backlight sehingga baju & background terpisah) */}
             <div
               className="absolute -inset-1 rounded-2xl opacity-75 blur-lg transition duration-500 group-hover:opacity-100"
               style={{
@@ -106,15 +145,12 @@ export default function About() {
                   'linear-gradient(135deg, rgba(6, 182, 212, 0.4) 0%, rgba(139, 92, 246, 0.4) 100%)',
               }}
             />
-
-            {/* Inner Backplate Lighting */}
             <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a12] p-1.5 shadow-2xl">
               <img
                 src="/images/Vincen Photo.png"
                 alt="Vincensius Prasetyo Adi"
                 className="w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover:scale-[1.02]"
                 style={{
-                  // Drop shadow khusus untuk memperjelas siluet bahu/baju dari background gelap
                   filter: 'drop-shadow(0px 8px 24px rgba(6, 182, 212, 0.25))',
                 }}
               />
@@ -122,7 +158,6 @@ export default function About() {
           </div>
         </div>
 
-        {/* Bio Intro */}
         <div className="sm:col-span-7">
           <div ref={titleRef} className="reveal mb-4">
             <h2 className="text-2xl font-black text-white leading-tight mb-1">
@@ -141,42 +176,34 @@ export default function About() {
         </div>
       </div>
 
-      {/* Skill Groups */}
+      {/* Skill Groups (Iterasi Bertingkat untuk Categories & Items) */}
       <div className="flex flex-col gap-8">
-        {skillGroups.map(({ label, icon, color, skills }) => (
-          <div key={label}>
-            <div className="flex items-center gap-2 mb-3">
+        {skillGroups.map(({ label, icon, color, categories }) => (
+          <div key={label} className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
               <span className="text-base">{icon}</span>
               <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
                 {label}
               </span>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill, i) => (
-                <SkillBadge key={skill} name={skill} color={color} index={i} />
+            <div className="flex flex-col gap-3 pl-2 border-l border-white/5">
+              {categories.map(({ subLabel, items }) => (
+                <div key={subLabel}>
+                  <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                    {subLabel}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {items.map((item, i) => (
+                      <SkillBadge key={item} name={item} color={color} index={i} />
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         ))}
       </div>
     </section>
-  )
-}
-
-export function SectionHeader({ title }) {
-  return (
-    <div className="flex items-center gap-3 mb-8">
-      <span className="text-xs font-black text-cyan-400 uppercase tracking-widest">
-        {title}
-      </span>
-      <div
-        className="flex-1 h-px"
-        style={{
-          background:
-            'linear-gradient(90deg, rgba(6,182,212,0.4), transparent)',
-        }}
-      />
-    </div>
   )
 }

@@ -8,23 +8,30 @@ const certificationsData = [
     icon: '🤖',
     items: [
       { name: 'Analitik Data Google', issuer: 'Google', file: '/pdf/Analitik Data Google.pdf' },
-      { name: 'Tableau Business Intelligence Analyst', issuer: 'Tableau', file: '/pdf/Tableau BI Analyst.pdf' },
+      { name: 'Tableau Business Intelligence Analyst', issuer: 'Tableau', file: '/pdf/Tableau Business Intelligence Analyst.pdf' },
       { name: 'Meta Data Analyst', issuer: 'Meta', file: '/pdf/Meta Data Analyst.pdf' },
-      { name: 'Data Science Fundamentals', issuer: 'BNSP', file: '/pdf/Data Science.pdf' },
+      { name: 'Data Science Fundamentals', issuer: 'Fresh Graduate Academy', file: '/pdf/Sertifikat_Vincensius Prasetyo Adi_Fundamental Data Science.pdf' },
+      { name: 'Certified AI Foundations Associate', issuer: 'Oracle', file: '/pdf/OCI25CertifiedAIFoundationsAssociate.pdf' },
+      { name: 'IBM BI Analyst', issuer: 'IBM', file: '/pdf/IBM BI Analyst.pdf' },
+      { name: 'Microsoft Data Visualization', issuer: 'Microsoft', file: '/pdf/Microsoft Data Visualization.pdf' },
+      { name: 'Microsoft Excel', issuer: 'Microsoft', file: '/pdf/Microsoft Excel - Vincensius Prasetyo Adi.pdf' },
+      { name: 'Data Analytics', issuer: 'Profesional Academy', file: '/pdf/Sertifikat_Vincensius Prasetyo Adi_Data Analytics.pdf' },
+      { name: 'Business Intelligence Engineer', issuer: 'Profesional Academy', file: '/pdf/Sertifikat_Vincensius Prasetyo Adi_Business Intelligence Engineer.pdf' }    
     ],
   },
   {
     category: 'Supply Chain',
     icon: '📦',
     items: [
-      { name: 'Supply Chain Management', issuer: 'SCM Institute', file: '/pdf/Supply Chain Management.pdf' },
+      { name: 'Supply Chain Management', issuer: 'Rutgers University', file: '/pdf/Supply Chain Management.pdf' },
+      { name: 'Unilever Supply Chain Data Analyst', issuer: 'Unilever', file: '/pdf/Unilever Supply Chain Data Analyst.pdf' },
     ],
   },
   {
     category: 'Google Cloud & Google Workspace',
     icon: '☁️',
     items: [
-      { name: 'Google Professional Workspace Administrator', issuer: 'Google Cloud', file: '/pdf/Google Workspace Admin.pdf' },
+      { name: 'Google Professional Workspace Administrator', issuer: 'Google Cloud', file: '/pdf/Google Professional Workspace Administrator.pdf' },
     ],
   },
   {
@@ -32,29 +39,31 @@ const certificationsData = [
     icon: '📈',
     items: [
       { name: 'IBM Business Analyst', issuer: 'IBM', file: '/pdf/IBM Business Analyst.pdf' },
-      { name: 'Six Sigma Green Belt', issuer: 'Six Sigma', file: '/pdf/Six Sigma Green Belt.pdf' },
-      { name: 'Digital Transformation', issuer: 'BNSP / Institute', file: '/pdf/Digital Transformation.pdf' },
+      { name: 'Six Sigma Green Belt', issuer: 'Kennesaw State University', file: '/pdf/Six Sigma Green Belt - KSU.pdf' },
+      { name: 'Digital Transformation 4.0', issuer: 'Kementrian Perindustrian', file: '/pdf/Transformasi Digital - Level Manager.pdf' },
     ],
   },
   {
     category: 'Project Management',
     icon: '🎯',
     items: [
-      { name: 'Manajemen Proyek Google', issuer: 'Google', file: '/pdf/Manajemen Proyek Google.pdf' },
+      { name: 'Manajemen Proyek Google', issuer: 'Google', file: '/pdf/Google Project Management.pdf' },
     ],
   },
   {
     category: 'LC/NC Analytics',
     icon: '⚡',
     items: [
-      { name: 'Data Engineering Profesional Certifications', issuer: 'Professional Body', file: '/pdf/Data Engineering Professional.pdf' },
+      { name: 'Data Engineering Profesional Certifications', issuer: 'RapidMiner', file: '/pdf/Vincensius_PA_Data Engineering Professional Certication.pdf' },
+      { name: 'Aplication Use Profesional Certificate', issuer: 'RapidMiner', file: '/pdf/RapidMiner_Vincensius_PA_Application_Use_Professional_Certificate.pdf' },
+      { name: 'Machine Learning Professional Certication', issuer: 'RapidMiner', file: '/pdf/Vincensius_PA_Machine Learning Professional Certication.pdf' },      
     ],
   },
   {
     category: 'Languages',
     icon: '🌐',
     items: [
-      { name: 'EFSET English Certificate (B1 Intermediate)', issuer: 'EFSET', file: '/pdf/EFSET.pdf' },
+      { name: 'EFSET English Certificate (B1 Intermediate)', issuer: 'EFSET', file: '/pdf/EF SET Certificate - Vincensius P A.pdf' },
     ],
   },
 ]
@@ -152,7 +161,7 @@ export default function PersonalDev() {
 
       <div className="mb-8">
         <h2 className="text-2xl font-black text-white leading-tight mb-2">
-          Certifications & <span className="text-cyan-400">Continuous Learning</span>
+          Certificates & <span className="text-cyan-400">Continuous Learning</span>
         </h2>
         <p className="text-xs text-gray-400">
           Klik pada sertifikat untuk melihat/mengunduh dokumen PDF resmi.

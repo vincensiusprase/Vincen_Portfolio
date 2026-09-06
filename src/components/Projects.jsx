@@ -62,17 +62,17 @@ const projects = [
     tagColors: ['sky', 'violet', 'emerald'],
     accent: '#3b82f6',
     icon: '🗺️',
-    link: 'https://github.com/vincensiusprase/App_Script_Personal_Project',
+    link: 'https://github.com/vincensiusprase/portofolio_recap/tree/main/01_automation/gmaps-lead-scraper',
   },
 ]
 
 const moreProjects = [
   {
     category: 'Business Intelligence',
-    title: 'Manufacturing Executive Dashboard',
-    desc: 'Interactive Looker Studio & Power BI dashboard tracking daily production yield and SCM KPIs.',
-    tags: ['Looker Studio', 'Power BI', 'DAX'],
-    githubUrl: 'https://github.com/vincensiusprase/App_Script_Personal_Project',
+    title: ' Employee Performance Analytics',
+    desc: 'Comprehensive overview of employee performance, combining key HR metrics into one intuitive and interactive platform',
+    tags: ['Power BI', 'DAX'],
+    githubUrl: 'https://github.com/vincensiusprase/portofolio_recap/tree/main/02_business_intelligence/employee-performance-analytics',
   },
   {
     category: 'Data Pipeline',
@@ -90,17 +90,17 @@ const moreProjects = [
   },
   {
     category: 'API Integration',
-    title: 'Maps API Leads Extractor',
-    desc: 'Automated lead scraper fetching location & contact data directly into structured spreadsheets.',
-    tags: ['REST API', 'Maps API', 'Apps Script'],
-    githubUrl: 'https://github.com/vincensiusprase/App_Script_Personal_Project',
+    title: 'Leads Scraping & Extraction',
+    desc: 'Built an automated lead scraper using Maps API, Apps Script, and Google Sheets to extract target glass shop leads.',
+    tags: ['Maps API', 'Apps Script','Google Sheets'],
+    githubUrl: 'https://github.com/vincensiusprase/portofolio_recap/tree/main/01_automation/gmaps-lead-scraper',
   },
   {
     category: 'Low Code/No Code',
-    title: 'KNIME Data Analytics Workflow',
-    desc: 'No-code data transformation and predictive modeling workflows for operational datasets.',
-    tags: ['KNIME', 'Analytics', 'Data Transformation'],
-    githubUrl: 'https://github.com/vincensiusprase/App_Script_Personal_Project',
+    title: 'Residential Heating Oil Consumption Forecasting',
+    desc: 'An end-to-end predictive analytics workflow built on KNIME Analytics Platform to forecast residential heating oil consumption (Heating_Oil)',
+    tags: ['KNIME', 'Machine Learning'],
+    githubUrl: 'https://github.com/vincensiusprase/portofolio_recap/tree/main/03_low_code/heating-oil-prediction',
   },
 ]
 

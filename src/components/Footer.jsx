@@ -37,9 +37,22 @@ export default function Footer() {
           <span className="text-white">something great.</span>
         </h2>
 
-        <p className="text-sm text-gray-600 mb-10">
+        <p className="text-sm text-gray-400 mb-6">
           Punya proyek data atau automation? Mari diskusi.
         </p>
+
+        {/* Direct Web Gmail Link */}
+        <a
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=vincensiusprase@gmail.com&su=Diskusi%20Proyek%20Data%20%26%20Automation"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:bg-cyan-400/10 transition-all mb-10 group"
+        >
+          <span className="text-sm">✉️</span>
+          <span className="text-sm font-semibold text-gray-300 group-hover:text-cyan-300 transition-colors">
+            vincensiusprase@gmail.com
+          </span>
+        </a>
 
         {/* Action Buttons: LinkedIn & GitHub Sejajar Horizontal */}
         <div className="flex items-center justify-center gap-4 mb-12">
