@@ -7,20 +7,25 @@ import Experience from './components/Experience'
 import Projects from './components/Projects'
 import PersonalDev from './components/PersonalDev'
 import Footer from './components/Footer'
+import Chatbot from './components/Chatbot'
+import { LanguageProvider } from './context/LanguageContext'
 
 export default function App() {
   return (
-    <div className="noise min-h-screen" style={{ background: '#050508' }}>
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <PersonalDev />
-      </main>
-      <Footer />
-      <Analytics />
-    </div>
+    <LanguageProvider>
+      <div className="noise min-h-screen" style={{ background: 'var(--bg-100)' }}>
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <Experience />
+          <Projects />
+          <PersonalDev />
+        </main>
+        <Footer />
+        <Analytics />
+        <Chatbot />
+      </div>
+    </LanguageProvider>
   )
 }

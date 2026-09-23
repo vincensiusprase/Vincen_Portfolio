@@ -1,0 +1,402 @@
+import React, { useState, useEffect, useRef } from 'react'
+
+// Impor otomatis isi berkas .md secara langsung menggunakan Vite ?raw import
+import profileContent from '../data/profile.md?raw'
+import projectsContent from '../data/projects.md?raw'
+import { useLanguage } from '../context/LanguageContext'
+
+const MAX_MONTHLY_LIMIT = 10
+
+// Fungsi pembantu untuk merender teks Markdown (Bold **teks**) menjadi HTML <strong>teks</strong>
+function renderFormattedMessage(text) {
+  if (!text) return null
+
+  // Memecah teks berdasarkan baris
+  const lines = text.split('\n')
+
+  return lines.map((line, lineIdx) => {
+    // Memecah teks per baris berdasarkan pola **teks**
+    const parts = line.split(/(\*\*.*?\*\*)/g)
+    const formattedLine = parts.map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        const boldText = part.slice(2, -2)
+        return (
+          <strong key={index} className="font-bold text-[#3D5A80]">
+            {boldText}
+          </strong>
+        )
+      }
+      return part
+    })
+
+    return (
+      <React.Fragment key={lineIdx}>
+        {formattedLine}
+        {lineIdx < lines.length - 1 && <br />}
+      </React.Fragment>
+    )
+  })
+}
+
+export default function Chatbot() {
+  const { language, t } = useLanguage()
+  const [isOpen, setIsOpen] = useState(false)
+  const [messages, setMessages] = useState([
+    {
+      sender: 'bot',
+      text: t('Halo! Saya VAI, AI Assistant resmi portofolio Vincen. Silakan tanyakan apa saja seputar pengalaman kerja, keahlian teknis, atau proyek-proyek dia!'),
+    },
+  ])
+  const [input, setInput] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [remainingQuota, setRemainingQuota] = useState(MAX_MONTHLY_LIMIT)
+  const textareaRef = useRef(null)
+  const chatEndRef = useRef(null)
+
+  useEffect(() => {
+    setMessages((currentMessages) => {
+      if (currentMessages.length !== 1 || currentMessages[0].sender !== 'bot') {
+        return currentMessages
+      }
+
+      return [{
+        ...currentMessages[0],
+        text: t('Halo! Saya VAI, AI Assistant resmi portofolio Vincen. Silakan tanyakan apa saja seputar pengalaman kerja, keahlian teknis, atau proyek-proyek dia!'),
+      }]
+    })
+  }, [language, t])
+
+  // Auto-resize tinggi textarea sesuai dengan konten pengguna
+  useEffect(() => {
+    const textarea = textareaRef.current
+    if (textarea) {
+      textarea.style.height = 'auto'
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 112)}px`
+    }
+  }, [input])
+
+  // Otomatis gulir ke pesan paling bawah
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, loading])
+
+  // Cek & hitung sisa kuota bulanan dari localStorage
+  const checkQuota = () => {
+    const currentDate = new Date()
+    const currentMonthKey = `${currentDate.getFullYear()}-${String(
+      currentDate.getMonth() + 1
+    ).padStart(2, '0')}`
+
+    const savedMonth = localStorage.getItem('chat_month')
+    let currentUsage = parseInt(
+      localStorage.getItem('chat_usage_count') || '0',
+      10
+    )
+
+    if (savedMonth !== currentMonthKey) {
+      localStorage.setItem('chat_month', currentMonthKey)
+      localStorage.setItem('chat_usage_count', '0')
+      currentUsage = 0
+    }
+
+    setRemainingQuota(Math.max(0, MAX_MONTHLY_LIMIT - currentUsage))
+    return {
+      allowed: currentUsage < MAX_MONTHLY_LIMIT,
+      currentUsage,
+    }
+  }
+
+  useEffect(() => {
+    checkQuota()
+  }, [])
+
+  const submitChat = async () => {
+    if (!input.trim() || loading) return
+
+    const userText = input.trim()
+    setInput('')
+
+    // Reset tinggi textarea ke kondisi awal
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+    }
+
+    // Batasi kuota penggunaan pengguna
+    const quota = checkQuota()
+    if (!quota.allowed) {
+      setMessages((prev) => [
+        ...prev,
+        { sender: 'user', text: userText },
+        {
+          sender: 'bot',
+          text: `Maaf, Anda telah mencapai batas maksimal (${MAX_MONTHLY_LIMIT} pertanyaan) untuk bulan ini. Silakan hubungi Vincensius secara langsung via LinkedIn atau Email!`,
+        },
+      ])
+      return
+    }
+
+    setMessages((prev) => [...prev, { sender: 'user', text: userText }])
+    const newUsage = quota.currentUsage + 1
+    localStorage.setItem('chat_usage_count', newUsage.toString())
+    setRemainingQuota(MAX_MONTHLY_LIMIT - newUsage)
+
+    setLoading(true)
+
+    try {
+      const systemPrompt = `
+Kamu adalah VAI, AI Assistant resmi untuk portofolio Vincensius Prasetyo Adi.
+Tugas utama kamu adalah menjawab pertanyaan pengunjung situs, recruiter, atau hiring manager seputar latar belakang profesional, keahlian teknis, dan proyek-proyek Vincensius berdasarkan dokumen Knowledge Base di bawah ini.
+
+==================================================
+KNOWLEDGE BASE: SUMMARY PROFIL & PENGALAMAN
+==================================================
+${profileContent}
+
+==================================================
+KNOWLEDGE BASE: DOKUMENTASI PROYEK (.MD)
+==================================================
+${projectsContent}
+
+==================================================
+ATURAN TAMPILAN JAWABAN (KERAPIAN VISUAL)
+==================================================
+1. PEMISAH BARIS (DOUBLE ENTER):
+   - Berikan 1 baris kosong (Double Enter / \\n\\n) sebelum dan sesudah membuat daftar (list) atau kelompok informasi baru.
+
+2. JUDUL KATEGORI (BOLD + EMOJI):
+   - Gunakan huruf tebal (bold) untuk judul kategori utama, misalnya: **[INFO] Data Engineering & Cloud Pipeline:**
+
+3. STRUKTUR BULLET BERSIH:
+   - Gunakan karakter "- " (strip + spasi) untuk setiap poin utama.
+   - Gunakan **bolding** hanya pada kata kunci utama (nama tools, metrik angka, atau modul).
+
+4. KEPADATAN TEKS:
+   - Maksimal 3-4 poin per kelompok informasi agar pembaca tidak lelah.
+
+==================================================
+BATASAN KEAMANAN (GUARDRAILS)
+==================================================
+1. Jawab HANYA berdasarkan informasi pada Knowledge Base di atas.
+2. WAJIB menjawab hanya dalam ${language === 'ID' ? 'Bahasa Indonesia' : 'Bahasa Inggris'}. Jangan mencampur bahasa atau mengikuti bahasa dokumen Knowledge Base.
+3. Gunakan bahasa yang ramah, profesional, dan ringkas.
+4. Jika ditanya di luar topik portofolio/pengalaman Vincensius, TOLAK dengan sopan:
+   "Maaf, saya hanya difungsikan untuk menjawab pertanyaan seputar portofolio, keahlian teknis, dan pengalaman kerja Vincensius."
+`
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'glm-5.3-flash',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userText },
+          ],
+          stream: false,
+        }),
+      })
+      // Pengecekan HTTP Error (Termasuk kuota/token habis 402/429 atau server error 500)
+      if (!response.ok) {
+        const errorBody = await response.text()
+        let apiError = ''
+        try {
+          apiError = JSON.parse(errorBody)?.error?.message || ''
+        } catch {
+          apiError = ''
+        }
+        console.error('GLM API request failed', {
+          status: response.status,
+          body: errorBody,
+        })
+        const error = new Error(`API Error Status: ${response.status}`)
+        error.status = response.status
+        error.apiMessage = apiError
+        throw error
+      }
+
+      const data = await response.json()
+      const botReply = data?.choices?.[0]?.message?.content
+
+      if (!botReply) {
+        throw new Error('Jawaban API kosong')
+      }
+
+      setMessages((prev) => [...prev, { sender: 'bot', text: botReply }])
+    } catch (err) {
+      console.error('Chatbot request failed', err)
+      const failedUsage = Math.max(0, newUsage - 1)
+      localStorage.setItem('chat_usage_count', failedUsage.toString())
+      setRemainingQuota(MAX_MONTHLY_LIMIT - failedUsage)
+      const unavailableMessage =
+        err.status === 429
+          ? 'Model GLM-5.3-Flash sedang sibuk. Silakan tunggu beberapa saat lalu coba lagi.'
+          : 'AI Assistant sedang mengalami gangguan. Silakan coba lagi nanti.'
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: 'bot',
+          text: unavailableMessage,
+        },
+      ])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    submitChat()
+  }
+
+  // Handling Keydown: Keyboard Navigation + Auto Bulleting
+  const handleKeyDown = (e) => {
+    const textarea = textareaRef.current
+    if (!textarea) return
+
+    const { selectionStart, selectionEnd, value } = textarea
+
+    // 1. Auto Convert "- " menjadi "| " saat menekan Spasi
+    if (e.key === ' ' && selectionStart === selectionEnd) {
+      const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
+      const currentLine = value.substring(lineStart, selectionStart)
+
+      if (currentLine === '-') {
+        e.preventDefault()
+        const newValue =
+          value.substring(0, lineStart) + '| ' + value.substring(selectionEnd)
+        setInput(newValue)
+
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd = lineStart + 2
+        }, 0)
+        return
+      }
+    }
+
+    // 2. Meneruskan Bullet "| " otomatis saat Shift+Enter
+    if (e.key === 'Enter' && e.shiftKey && selectionStart === selectionEnd) {
+      const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
+      const currentLine = value.substring(lineStart, selectionStart)
+
+      if (currentLine.startsWith('| ')) {
+        e.preventDefault()
+        const insertText = '\n| '
+        const newValue =
+          value.substring(0, selectionStart) +
+          insertText +
+          value.substring(selectionEnd)
+        setInput(newValue)
+
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd =
+            selectionStart + insertText.length
+        }, 0)
+        return
+      }
+    }
+
+    // 3. Enter tanpa Shift: Kirim Pesan
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      submitChat()
+    }
+  }
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50 font-sans">
+      {/* Tombol Floating Icon */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="flex items-center gap-2 px-4 py-3 rounded-full bg-[#1F3A5F] text-white font-bold shadow-lg shadow-[#1F3A5F]/20 hover:bg-[#3D5A80] hover:scale-105 transition-all cursor-pointer border border-slate-200"
+        >
+          <span className="text-lg">VAI</span>
+          <span className="text-xs">Ask Assistant</span>
+        </button>
+      )}
+
+      {/* Window Chatbot */}
+      {isOpen && (
+        <div className="w-[340px] sm:w-[380px] h-[480px] bg-white border border-slate-200 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn">
+          {/* Header */}
+          <div className="p-3.5 border-b border-slate-200 bg-[#E0F0FF]/60 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">VAI</span>
+              <div>
+                <h3 className="text-xs font-bold text-[#1F3A5F]">
+                  AI Assistant
+                </h3>
+                <p className="text-[10px] text-[#3D5A80] font-mono">
+                  Powered by GLM-5.3-Flash | Kuota: {remainingQuota}/{MAX_MONTHLY_LIMIT}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-slate-400 hover:text-[#1F3A5F] text-xs p-1 cursor-pointer"
+            >
+              X
+            </button>
+          </div>
+
+          {/* Area History Chat */}
+          <div className="flex-1 p-3 overflow-y-auto flex flex-col gap-2.5 text-xs bg-slate-50/50">
+            {messages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`flex ${
+                  msg.sender === 'user' ? 'justify-end' : 'justify-start'
+                }`}
+              >
+                {/* Bubble Chat */}
+                <div
+                  className={`max-w-[88%] p-3 rounded-2xl text-xs leading-relaxed whitespace-pre-wrap ${
+                    msg.sender === 'user'
+                      ? 'bg-[#1F3A5F] text-white self-end ml-auto shadow-xs'
+                      : 'bg-slate-100 text-slate-800 border border-slate-200/80 shadow-2xs self-start mr-auto'
+                  }`}
+                >
+                  {renderFormattedMessage(msg.text)}
+                </div>
+              </div>
+            ))}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="bg-slate-100 text-slate-500 p-2.5 rounded-xl text-xs animate-pulse border border-slate-200">
+                  GLM-5.3-Flash sedang berpikir...
+                </div>
+              </div>
+            )}
+            <div ref={chatEndRef} />
+          </div>
+
+          {/* Form Input Chat */}
+          <form
+            onSubmit={handleFormSubmit}
+            className="p-2.5 border-t border-slate-200 bg-white flex items-end gap-2"
+          >
+            <textarea
+              ref={textareaRef}
+              rows={1}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Tanyakan sesuatu... (- + spasi untuk bullet)"
+              className="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#1F3A5F] focus:bg-white resize-none max-h-28 leading-relaxed overflow-y-auto"
+            />
+            <button
+              type="submit"
+              disabled={loading || !input.trim()}
+              className="px-3.5 py-2 rounded-xl bg-[#1F3A5F] text-white font-bold text-xs hover:bg-[#3D5A80] disabled:opacity-50 cursor-pointer transition-colors shadow-2xs self-end"
+            >
+              Kirim
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
+  )
+}

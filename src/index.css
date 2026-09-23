@@ -4,76 +4,159 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-html { scroll-behavior: smooth; }
+:root {
+  /* Primary Navy Blues (Dipertajam untuk kontras di background terang) */
+  --primary-100: #1F3A5F; /* Utama: Deep Navy untuk teks utama/tombol primer */
+  --primary-200: #3D5A80; /* Sekunder: Muted Slate Navy */
+  --primary-300: #254E7A; /* Hover / Active state */
+
+  /* Accent Muted Slate & Soft Sky */
+  --accent-100: #3D5A80; /* Aksen elemen/border/icon */
+  --accent-200: #E0F0FF; /* Soft Sky Blue (Latar belakang elemen/badge) */
+
+  /* Text Colors (Gelap di atas latar terang) */
+  --text-100: #0F1C2E; /* Teks Utama: Deep Navy/Off-Black (High Contrast) */
+  --text-200: #4A5568; /* Teks Sekunder: Slate Gray */
+
+  /* Background Colors (Light Mode) */
+  --bg-100: #FFFFFF; /* Latar Utama: Pure White */
+  --bg-200: #F4F7FA; /* Latar Kartu / Section: Soft Off-White */
+  --bg-300: #E2E8F0; /* Border / Divider / Hover Surface */
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
-  background: #050508;
-  color: white;
+  background-color: var(--bg-100);
+  color: var(--text-200);
 }
 
-/* Scroll reveal */
-.reveal {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Gradient text */
+/* Gradient Text disesuaikan dengan Palet Navy Accent */
 .gradient-text {
-  background: linear-gradient(135deg, #fff 0%, #06b6d4 50%, #8b5cf6 100%);
+  background: linear-gradient(135deg, var(--text-100) 0%, var(--primary-300) 50%, var(--accent-200) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Glowing border card */
+/* Glowing Border Card */
 .glow-card {
   position: relative;
   transition: all 0.3s ease;
 }
+
 .glow-card::before {
   content: '';
   position: absolute;
   inset: -1px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+  background: linear-gradient(135deg, var(--primary-200), var(--accent-100));
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
 }
-.glow-card:hover::before { opacity: 1; }
 
-/* Skill bar animation */
-@keyframes fillBar {
-  from { width: 0%; }
-  to { width: var(--target-width); }
+.glow-card:hover::before {
+  opacity: 1;
 }
 
-/* Floating animation for avatar */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
 }
-.float-anim { animation: float 4s ease-in-out infinite; }
-
-/* Noise texture overlay */
-.noise::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 100;
+::-webkit-scrollbar-track {
+  background: var(--bg-100);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-300);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-200);
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #050508; }
-::-webkit-scrollbar-thumb { background: #1e1e2e; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* Animation untuk Running Marquee Text */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 18s linear infinite;
+}
+
+/* Efek Masking agar teks perlahan memudar di ujung kiri dan kanan */
+.mask-gradient {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+}
+
+/* Animation untuk Running Marquee Horizontal */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+/* Masking gradien halus di batas kiri dan kanan */
+.mask-gradient {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
