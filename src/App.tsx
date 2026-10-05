@@ -1,14 +1,14 @@
 import React from 'react'
 import { Analytics } from '@vercel/analytics/react'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import About from './components/About'
-import Experience from './components/Experience'
-import Projects from './components/Projects'
-import PersonalDev from './components/PersonalDev'
-import Footer from './components/Footer'
-import Chatbot from './components/Chatbot'
-import { LanguageProvider } from './context/LanguageContext'
+import Navbar from './components/Navbar.tsx'
+import Hero from './components/Hero.tsx'
+import About from './components/About.tsx'
+import Experience from './components/Experience.tsx'
+import Projects from './components/Projects.tsx'
+import PersonalDev from './components/PersonalDev.tsx'
+import Footer from './components/Footer.tsx'
+import Chatbot from './components/Chatbot.tsx'
+import { LanguageProvider } from './context/LanguageContext.tsx'
 
 export default function App() {
   return (

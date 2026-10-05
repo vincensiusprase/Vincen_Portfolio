@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useLanguage } from '../context/LanguageContext'
+import { useLanguage } from '../context/LanguageContext.tsx'
+
+interface NavLink {
+  href: string
+  label: string
+}
 
 export default function Navbar() {
   const { language, setLanguage, t } = useLanguage()
@@ -12,7 +17,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const links = [
+  const links: NavLink[] = [
     { href: '#about', label: 'About' },
     { href: '#experience', label: 'Experience' },
     { href: '#projects', label: 'Projects' },
@@ -27,7 +32,7 @@ export default function Navbar() {
           : 'bg-transparent py-5'
       }`}
     >
-      <div className="max-w-2xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="font-black text-lg tracking-tight text-slate-900">
           V<span className="text-[#3D5A80]">.</span>

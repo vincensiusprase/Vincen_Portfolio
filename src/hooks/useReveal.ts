@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-export function useReveal(delay = 0) {
-  const ref = useRef(null)
+export function useReveal(delay = 0): React.RefObject<HTMLElement | null> {
+  const ref = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     const el = ref.current

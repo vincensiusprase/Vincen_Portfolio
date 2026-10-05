@@ -1,11 +1,25 @@
 import { useState } from 'react'
-import { useReveal } from '../hooks/useReveal'
-import { useLanguage } from '../context/LanguageContext'
+import { useReveal } from '../hooks/useReveal.ts'
+import { useLanguage } from '../context/LanguageContext.tsx'
 
-const skillGroups = [
+// Type definitions for skill data
+interface SkillCategory {
+  subLabel: string
+  items: string[]
+}
+
+interface SkillGroup {
+  id: string
+  label: string
+  icon: string
+  color: string
+  categories: SkillCategory[]
+}
+
+const skillGroups: SkillGroup[] = [
   {
     id: 'data-prog',
-    label: 'Data Analysis & Programming',
+    label: 'Data Operations',
     icon: '📈',
     color: 'navy',
     categories: [
@@ -46,7 +60,6 @@ const skillGroups = [
         items: [
           'BigQuery',
           'Dataform',
-          'Dataflow',
           'Cloud Storage',
           'Knowledge Catalog',
           'Pub/Sub',
@@ -110,7 +123,7 @@ const skillGroups = [
     categories: [
       {
         subLabel: 'Automation & APIs',
-        items: ['Google Apps Script', 'API Integration', 'Prompt Engineering'],
+        items: ['Google Apps Script', 'API Integration', 'Prompt Engineering', 'RAG'],
       },
       {
         subLabel: 'No-Code/Low-Code Analytics',
@@ -172,13 +185,18 @@ const skillGroups = [
 ]
 
 // Color Map seragam bertema Dark Blue & Slate Navy
-const colorMap = {
+const colorMap: Record<string, string> = {
   navy: 'text-[#0F1C2E] bg-slate-200/80 border-slate-300 hover:bg-[#1F3A5F] hover:text-white',
   slateNavy: 'text-[#1F3A5F] bg-sky-100/70 border-sky-200 hover:bg-[#3D5A80] hover:text-white',
   darkSky: 'text-[#254E7A] bg-blue-50 border-blue-200 hover:bg-[#1F3A5F] hover:text-white',
 }
 
-function SkillBadge({ name, color }) {
+interface SkillBadgeProps {
+  name: string
+  color: string
+}
+
+function SkillBadge({ name, color }: SkillBadgeProps) {
   return (
     <span
       className={`text-xs font-semibold px-2.5 py-1 rounded-xl border transition-all cursor-default whitespace-nowrap shadow-2xs ${
@@ -190,7 +208,7 @@ function SkillBadge({ name, color }) {
   )
 }
 
-export function SectionHeader({ title }) {
+export function SectionHeader({ title }: { title: string }) {
   const { t } = useLanguage()
   return (
     <div className="flex items-center gap-3 mb-8">
@@ -294,7 +312,7 @@ export default function About() {
   }
 
   return (
-    <section id="about" className="px-6 py-20 max-w-4xl mx-auto overflow-hidden">
+    <section id="about" className="px-6 py-20 max-w-6xl mx-auto overflow-hidden">
       <SectionHeader title="About" />
 
       {/* Profil Section */}
@@ -321,16 +339,28 @@ export default function About() {
         <div className="sm:col-span-7">
           <div ref={titleRef} className="reveal mb-4">
             <h2 className="text-2xl font-black text-[#1F3A5F] leading-tight mb-1">
-              {t('Engineer meets')} <span className="text-[#3D5A80]">{t('Data Analyst')}</span>
+              {t('Operations meets')} <span className="text-[#3D5A80]">{t('Data, Automation & AI')}</span>
             </h2>
             <p className="text-xs font-semibold text-slate-500">
               Vincensius Prasetyo Adi
             </p>
           </div>
 
-          <div ref={textRef} className="reveal">
-            <p className="text-sm text-slate-600 leading-relaxed">
-              {t('Data Analyst at PT Intan Safety Glass leveraging 5+ years of combined expertise in Supply Chain, Data Engineering, and Digital Transformation. Specialized in building end-to-end data pipelines, optimizing GCP infrastructure, driving BI analytics, and engineering AI-based workflow automations.')}
+          <div ref={textRef} className="reveal space-y-3 text-sm text-slate-600 leading-relaxed">
+            <p>
+              {t('5+ years across supply chain, production operations, and data in manufacturing.')}
+            </p>
+            <p>
+              {t('Specialized in building end-to-end data pipelines, optimizing GCP infrastructure, driving BI analytics, and engineering AI-based workflow automations.')}
+            </p>
+            <p>
+              <span className="font-semibold text-slate-800">
+                {t('What I am looking for:')}
+              </span>{' '}
+              {t('a company that wants to reduce waste and manual work through data and AI, and needs someone who understands both the operations and the technology to make it happen.')}
+            </p>
+            <p className="text-slate-500">
+              {t('Open to conversations on data-driven operations, supply chain analytics, and manufacturing digital transformation.')}
             </p>
           </div>
         </div>

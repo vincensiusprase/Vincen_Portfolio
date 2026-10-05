@@ -1,9 +1,50 @@
 import React, { useState } from 'react'
-import { SectionHeader } from './About'
-import { useLanguage } from '../context/LanguageContext'
+import { SectionHeader } from './About.tsx'
+import { useLanguage } from '../context/LanguageContext.tsx'
+import ErrorBoundary from './ErrorBoundary.tsx'
+
+// Type definitions for project data
+interface ProjectTag {
+  tag: string
+  color: string
+}
+
+interface FeaturedProject {
+  id: string
+  category: string
+  name: string
+  desc: string
+  tags: string[]
+  tagColors: string[]
+  accent: string
+  icon: string
+  link: string
+  videoUrl?: string
+  mainImage: string
+  images: string[]
+}
+
+interface MoreProject {
+  category: string
+  title: string
+  desc: string
+  tags: string[]
+  githubUrl: string
+}
+
+interface ImageSlideshowModalProps {
+  project: FeaturedProject | null
+  onClose: () => void
+}
+
+interface VideoModalProps {
+  selectedVideo: { url: string; name: string } | null
+  onClose: () => void
+  language: 'ID' | 'EN'
+}
 
 // Daftar Proyek Utama (Carousel Slider)
-const featuredProjects = [
+const featuredProjects: FeaturedProject[] = [
   {
     id: 'recruitment-automation',
     category: 'AI & Google Workspace',
@@ -46,7 +87,7 @@ const featuredProjects = [
     accent: '#10b981',
     icon: '📦',
     link: 'https://github.com/vincensiusprase/portofolio_recap/tree/main/05_ai_engineer/rag_fmea',
-    mainImage: '/images/RAG FMEA.jpeg',
+    mainImage: '/images/FMEA-Cover.png',
     images: [
       '/images/Evaluasi_RAG_FMEA.jpeg',
 
@@ -69,7 +110,7 @@ const featuredProjects = [
   },
 ]
 
-const moreProjects = [
+const moreProjects: MoreProject[] = [
   {
     category: 'Business Intelligence',
     title: 'Employee Performance Analytics',
@@ -119,7 +160,7 @@ const tagColorMap = {
 }
 
 // Modal Component untuk Slideshow Galeri Foto Proyek
-function ImageSlideshowModal({ project, onClose }) {
+function ImageSlideshowModalContent({ project, onClose }: ImageSlideshowModalProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   if (!project || !project.images || project.images.length === 0) return null
@@ -206,12 +247,49 @@ function ImageSlideshowModal({ project, onClose }) {
   )
 }
 
+/**
+ * Image Slideshow Modal with Error Boundary
+ * Wraps the image slideshow content with error handling
+ */
+function ImageSlideshowModal({ project, onClose }: ImageSlideshowModalProps) {
+  return (
+    <ErrorBoundary
+      title="Image Gallery Error"
+      message="Unable to load the project images. Please try again."
+      fallback={(error, errorInfo) => (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-fadeIn"
+          onClick={onClose}
+        >
+          <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-bold text-[#1F3A5F] mb-2">Image Gallery Error</h3>
+            <p className="text-sm text-slate-600 mb-4">Unable to load the project images. Please try again.</p>
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-[#1F3A5F] text-white text-sm font-semibold rounded-xl hover:bg-[#3D5A80] transition-colors cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    >
+      <ImageSlideshowModalContent project={project} onClose={onClose} />
+    </ErrorBoundary>
+  )
+}
+
 export default function Projects() {
   const { t, language } = useLanguage()
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [activeCategory, setActiveCategory] = useState('All')
-  const [selectedGalleryProject, setSelectedGalleryProject] = useState(null)
-  const [selectedVideo, setSelectedVideo] = useState(null)
+  const [activeIndex, setActiveIndex] = useState<number>(0)
+  const [activeCategory, setActiveCategory] = useState<string>('All')
+  const [selectedGalleryProject, setSelectedGalleryProject] = useState<FeaturedProject | null>(null)
+  const [selectedVideo, setSelectedVideo] = useState<{ url: string; name: string } | null>(null)
 
   const currentProject = featuredProjects[activeIndex]
 
@@ -229,7 +307,7 @@ export default function Projects() {
       : moreProjects.filter((p) => p.category === activeCategory)
 
   return (
-    <section id="projects" className="px-6 py-20 max-w-4xl mx-auto relative">
+    <section id="projects" className="px-6 py-20 max-w-6xl mx-auto relative">
       <SectionHeader title="Projects" />
 
       {/* HEADER CAROUSEL: Judul & Tombol Navigasi Panah */}
@@ -439,39 +517,87 @@ export default function Projects() {
 
       {/* MODAL POPUP VIDEO DEMO */}
       {selectedVideo && (
+        <VideoModal
+          selectedVideo={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+          language={language}
+        />
+      )}
+    </section>
+  )
+}
+
+// Video Modal Content Component
+function VideoModalContent({ selectedVideo, onClose, language }: VideoModalProps) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-fadeIn"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-3xl bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
+          <h3 className="text-sm font-bold text-[#1F3A5F]">
+            {selectedVideo.name} — {language === 'ID' ? 'Demo Animasi' : 'Demo Animation'}
+          </h3>
+          <button
+            onClick={onClose}
+            className="text-slate-500 hover:text-[#1F3A5F] text-xs bg-white hover:bg-slate-100 border border-slate-200 w-7 h-7 rounded-full flex items-center justify-center transition-colors cursor-pointer shadow-xs"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="p-4 bg-slate-100 flex justify-center">
+          <video
+            src={selectedVideo.url}
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls
+            className="w-full rounded-xl border border-slate-200 shadow-md max-h-[70vh] object-contain"
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Video Modal with Error Boundary
+ * Wraps the video modal content with error handling
+ */
+function VideoModal({ selectedVideo, onClose, language }: VideoModalProps) {
+  return (
+    <ErrorBoundary
+      title="Video Playback Error"
+      message="Unable to load the video. The file may be missing or in an unsupported format."
+      fallback={(error, errorInfo) => (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-fadeIn"
-          onClick={() => setSelectedVideo(null)}
+          onClick={onClose}
         >
-          <div
-            className="relative w-full max-w-3xl bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
-              <h3 className="text-sm font-bold text-[#1F3A5F]">
-                {selectedVideo.name} — {language === 'ID' ? 'Demo Animasi' : 'Demo Animation'}
-              </h3>
-              <button
-                onClick={() => setSelectedVideo(null)}
-                className="text-slate-500 hover:text-[#1F3A5F] text-xs bg-white hover:bg-slate-100 border border-slate-200 w-7 h-7 rounded-full flex items-center justify-center transition-colors cursor-pointer shadow-xs"
-              >
-                ✕
-              </button>
+          <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 shadow-2xl text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
             </div>
-            <div className="p-4 bg-slate-100 flex justify-center">
-              <video
-                src={selectedVideo.url}
-                autoPlay
-                loop
-                muted
-                playsInline
-                controls
-                className="w-full rounded-xl border border-slate-200 shadow-md max-h-[70vh] object-contain"
-              />
-            </div>
+            <h3 className="text-lg font-bold text-[#1F3A5F] mb-2">Video Playback Error</h3>
+            <p className="text-sm text-slate-600 mb-4">Unable to load the video. The file may be missing or in an unsupported format.</p>
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-[#1F3A5F] text-white text-sm font-semibold rounded-xl hover:bg-[#3D5A80] transition-colors cursor-pointer"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
-    </section>
+    >
+      <VideoModalContent selectedVideo={selectedVideo} onClose={onClose} language={language} />
+    </ErrorBoundary>
   )
 }

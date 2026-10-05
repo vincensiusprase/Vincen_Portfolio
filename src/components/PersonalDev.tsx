@@ -1,9 +1,27 @@
 import React, { useState } from 'react'
-import { useReveal } from '../hooks/useReveal'
-import { SectionHeader } from './About'
-import { useLanguage } from '../context/LanguageContext'
+import { useReveal } from '../hooks/useReveal.ts'
+import { SectionHeader } from './About.tsx'
+import { useLanguage } from '../context/LanguageContext.tsx'
+import PdfViewerModal from './PdfViewerModal.tsx'
 
-const certificationsData = [
+interface CertificationItem {
+  name: string
+  issuer: string
+  file: string
+}
+
+interface CertificationCategory {
+  category: string
+  icon: string
+  items: CertificationItem[]
+}
+
+interface CategoryGroupProps {
+  group: CertificationCategory
+  onPreview: (cert: CertificationItem) => void
+}
+
+const certificationsData: CertificationCategory[] = [
   {
     category: 'Data & AI',
     icon: '🤖',
@@ -67,58 +85,10 @@ const certificationsData = [
       { name: 'EFSET English Certificate (B1 Intermediate)', issuer: 'EFSET', file: '/pdf/EF SET Certificate - Vincensius P A.pdf' },
     ],
   },
-]
+  ]
 
-// Modal Component untuk Preview PDF
-function PdfViewerModal({ cert, onClose }) {
-  const { t } = useLanguage()
-  if (!cert) return null;
-
-  const pdfUrl = `${cert.file}#toolbar=0&navpanes=0&scrollbar=1`;
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in"
-      onClick={onClose}
-    >
-      <div
-        className="relative w-full max-w-4xl h-[85vh] bg-white border border-slate-200 rounded-2xl flex flex-col overflow-hidden shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-        onContextMenu={(e) => e.preventDefault()}
-      >
-        {/* Header Modal */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
-          <div className="flex flex-col">
-            <h3 className="text-sm font-bold text-[#1F3A5F]">{cert.name}</h3>
-            <p className="text-xs text-slate-500">{t('Issued by ')}{cert.issuer}</p>
-          </div>
-
-          <button
-            onClick={onClose}
-            className="p-2 text-slate-600 hover:text-[#1F3A5F] bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all duration-200 flex items-center gap-1.5 text-xs font-semibold shadow-xs cursor-pointer"
-          >
-            <span>{t('Close')}</span>
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* PDF Viewer Container */}
-        <div className="relative flex-1 w-full h-full bg-slate-100">
-          <iframe
-            src={pdfUrl}
-            className="w-full h-full border-none"
-            title={cert.name}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// Component untuk menangani per-kategori dengan limit 3 & tombol Show More
-function CategoryGroup({ group, onPreview }) {
+  // Component untuk menangani per-kategori dengan limit 3 & tombol Show More
+  function CategoryGroup({ group, onPreview }: CategoryGroupProps) {
   const { t, language } = useLanguage()
   const [expanded, setExpanded] = useState(false)
   const hasMore = group.items.length > 3
@@ -200,18 +170,18 @@ function CategoryGroup({ group, onPreview }) {
 
 export default function PersonalDev() {
   const { t } = useLanguage()
-  const [selectedCategory, setSelectedCategory] = useState('Data & AI')
-  const [activeCert, setActiveCert] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState<string>('Data & AI')
+  const [activeCert, setActiveCert] = useState<CertificationItem | null>(null)
 
-  const categories = ['All', ...certificationsData.map((c) => c.category)]
+  const categories: string[] = ['All', ...certificationsData.map((c) => c.category)]
 
-  const filteredData =
+  const filteredData: CertificationCategory[] =
     selectedCategory === 'All'
       ? certificationsData
       : certificationsData.filter((c) => c.category === selectedCategory)
 
   return (
-    <section id="personal-dev" className="px-6 py-20 max-w-2xl mx-auto">
+    <section id="personal-dev" className="px-6 py-20 max-w-5xl mx-auto">
       <SectionHeader title="Personal Development" />
 
       <div className="mb-8">

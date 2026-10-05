@@ -1,8 +1,8 @@
-import { useLanguage } from '../context/LanguageContext'
+import { useLanguage } from '../context/LanguageContext.tsx'
 
 export default function Footer() {
   const { language, t } = useLanguage()
-  const emailSubject = language === 'ID'
+  const emailSubject: string = language === 'ID'
     ? 'Diskusi Proyek Data & Automation'
     : 'Data & Automation Project Discussion'
   return (
@@ -15,7 +15,7 @@ export default function Footer() {
         />
       </div>
 
-      <div className="relative z-10 max-w-lg mx-auto text-center">
+      <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Divider */}
         <div className="flex items-center gap-4 mb-12">
           <div

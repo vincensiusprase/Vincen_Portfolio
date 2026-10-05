@@ -3,12 +3,22 @@ import React, { useState, useEffect, useRef } from 'react'
 // Impor otomatis isi berkas .md secara langsung menggunakan Vite ?raw import
 import profileContent from '../data/profile.md?raw'
 import projectsContent from '../data/projects.md?raw'
-import { useLanguage } from '../context/LanguageContext'
+import { useLanguage } from '../context/LanguageContext.tsx'
 
 const MAX_MONTHLY_LIMIT = 10
 
+interface ChatMessage {
+  sender: 'user' | 'bot'
+  text: string
+}
+
+interface QuotaCheckResult {
+  allowed: boolean
+  currentUsage: number
+}
+
 // Fungsi pembantu untuk merender teks Markdown (Bold **teks**) menjadi HTML <strong>teks</strong>
-function renderFormattedMessage(text) {
+function renderFormattedMessage(text: string): React.ReactNode {
   if (!text) return null
 
   // Memecah teks berdasarkan baris
@@ -40,18 +50,18 @@ function renderFormattedMessage(text) {
 
 export default function Chatbot() {
   const { language, t } = useLanguage()
-  const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState([
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
       sender: 'bot',
       text: t('Halo! Saya VAI, AI Assistant resmi portofolio Vincen. Silakan tanyakan apa saja seputar pengalaman kerja, keahlian teknis, atau proyek-proyek dia!'),
     },
   ])
-  const [input, setInput] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [remainingQuota, setRemainingQuota] = useState(MAX_MONTHLY_LIMIT)
-  const textareaRef = useRef(null)
-  const chatEndRef = useRef(null)
+  const [input, setInput] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [remainingQuota, setRemainingQuota] = useState<number>(MAX_MONTHLY_LIMIT)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const chatEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMessages((currentMessages) => {
@@ -81,7 +91,7 @@ export default function Chatbot() {
   }, [messages, loading])
 
   // Cek & hitung sisa kuota bulanan dari localStorage
-  const checkQuota = () => {
+    const checkQuota = (): QuotaCheckResult => {
     const currentDate = new Date()
     const currentMonthKey = `${currentDate.getFullYear()}-${String(
       currentDate.getMonth() + 1
@@ -110,7 +120,7 @@ export default function Chatbot() {
     checkQuota()
   }, [])
 
-  const submitChat = async () => {
+  const submitChat = async (): Promise<void> => {
     if (!input.trim() || loading) return
 
     const userText = input.trim()
@@ -124,25 +134,27 @@ export default function Chatbot() {
     // Batasi kuota penggunaan pengguna
     const quota = checkQuota()
     if (!quota.allowed) {
-      setMessages((prev) => [
+        setMessages((prev: ChatMessage[]) => [
         ...prev,
         { sender: 'user', text: userText },
         {
           sender: 'bot',
-          text: `Maaf, Anda telah mencapai batas maksimal (${MAX_MONTHLY_LIMIT} pertanyaan) untuk bulan ini. Silakan hubungi Vincensius secara langsung via LinkedIn atau Email!`,
+            text: t('Maaf, Anda telah mencapai batas maksimal (${MAX_MONTHLY_LIMIT} pertanyaan) untuk bulan ini. Silakan hubungi Vincensius secara langsung via LinkedIn atau Email!'),
         },
       ])
       return
     }
 
-    setMessages((prev) => [...prev, { sender: 'user', text: userText }])
+      setMessages((prev: ChatMessage[]) => [...prev, { sender: 'user', text: userText }])
     const newUsage = quota.currentUsage + 1
     localStorage.setItem('chat_usage_count', newUsage.toString())
     setRemainingQuota(MAX_MONTHLY_LIMIT - newUsage)
 
     setLoading(true)
 
-    try {
+      let currentUsageForRollback = newUsage
+
+      try {
       const systemPrompt = `
 Kamu adalah VAI, AI Assistant resmi untuk portofolio Vincensius Prasetyo Adi.
 Tugas utama kamu adalah menjawab pertanyaan pengunjung situs, recruiter, atau hiring manager seputar latar belakang profesional, keahlian teknis, dan proyek-proyek Vincensius berdasarkan dokumen Knowledge Base di bawah ini.
@@ -220,90 +232,92 @@ BATASAN KEAMANAN (GUARDRAILS)
       const botReply = data?.choices?.[0]?.message?.content
 
       if (!botReply) {
-        throw new Error('Jawaban API kosong')
+              throw new Error(t('Jawaban API kosong'))
       }
 
-      setMessages((prev) => [...prev, { sender: 'bot', text: botReply }])
-    } catch (err) {
+            setMessages((prev: ChatMessage[]) => [...prev, { sender: 'bot', text: botReply }])
+          } catch (err: unknown) {
       console.error('Chatbot request failed', err)
-      const failedUsage = Math.max(0, newUsage - 1)
+            const failedUsage = Math.max(0, currentUsageForRollback - 1)
       localStorage.setItem('chat_usage_count', failedUsage.toString())
       setRemainingQuota(MAX_MONTHLY_LIMIT - failedUsage)
-      const unavailableMessage =
-        err.status === 429
-          ? 'Model GLM-5.3-Flash sedang sibuk. Silakan tunggu beberapa saat lalu coba lagi.'
-          : 'AI Assistant sedang mengalami gangguan. Silakan coba lagi nanti.'
+      
+            const errorWithStatus = err as { status?: number }
+            const unavailableMessage =
+              errorWithStatus.status === 429
+                ? t('Model GLM-5.3-Flash sedang sibuk. Silakan tunggu beberapa saat lalu coba lagi.')
+                : t('AI Assistant sedang mengalami gangguan. Silakan coba lagi nanti.')
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: 'bot',
-          text: unavailableMessage,
-        },
-      ])
-    } finally {
-      setLoading(false)
-    }
-  }
+            setMessages((prev: ChatMessage[]) => [
+              ...prev,
+              {
+                sender: 'bot',
+                text: unavailableMessage,
+              },
+            ])
+          } finally {
+            setLoading(false)
+          }
+        }
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault()
-    submitChat()
-  }
+        const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+          e.preventDefault()
+          submitChat()
+        }
 
-  // Handling Keydown: Keyboard Navigation + Auto Bulleting
-  const handleKeyDown = (e) => {
-    const textarea = textareaRef.current
-    if (!textarea) return
+        // Handling Keydown: Keyboard Navigation + Auto Bulleting
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+          const textarea = textareaRef.current
+          if (!textarea) return
 
-    const { selectionStart, selectionEnd, value } = textarea
+          const { selectionStart, selectionEnd, value } = textarea
 
-    // 1. Auto Convert "- " menjadi "| " saat menekan Spasi
-    if (e.key === ' ' && selectionStart === selectionEnd) {
-      const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
-      const currentLine = value.substring(lineStart, selectionStart)
+          // 1. Auto Convert "- " menjadi "| " saat menekan Spasi
+          if (e.key === ' ' && selectionStart === selectionEnd) {
+            const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
+            const currentLine = value.substring(lineStart, selectionStart)
 
-      if (currentLine === '-') {
-        e.preventDefault()
-        const newValue =
-          value.substring(0, lineStart) + '| ' + value.substring(selectionEnd)
-        setInput(newValue)
+            if (currentLine === '-') {
+              e.preventDefault()
+              const newValue =
+                value.substring(0, lineStart) + '| ' + value.substring(selectionEnd)
+              setInput(newValue)
 
-        setTimeout(() => {
-          textarea.selectionStart = textarea.selectionEnd = lineStart + 2
-        }, 0)
-        return
-      }
-    }
+              setTimeout(() => {
+                textarea.selectionStart = textarea.selectionEnd = lineStart + 2
+              }, 0)
+              return
+            }
+          }
 
-    // 2. Meneruskan Bullet "| " otomatis saat Shift+Enter
-    if (e.key === 'Enter' && e.shiftKey && selectionStart === selectionEnd) {
-      const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
-      const currentLine = value.substring(lineStart, selectionStart)
+          // 2. Meneruskan Bullet "| " otomatis saat Shift+Enter
+          if (e.key === 'Enter' && e.shiftKey && selectionStart === selectionEnd) {
+            const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
+            const currentLine = value.substring(lineStart, selectionStart)
 
-      if (currentLine.startsWith('| ')) {
-        e.preventDefault()
-        const insertText = '\n| '
-        const newValue =
-          value.substring(0, selectionStart) +
-          insertText +
-          value.substring(selectionEnd)
-        setInput(newValue)
+            if (currentLine.startsWith('| ')) {
+              e.preventDefault()
+              const insertText = '\n| '
+              const newValue =
+                value.substring(0, selectionStart) +
+                insertText +
+                value.substring(selectionEnd)
+              setInput(newValue)
 
-        setTimeout(() => {
-          textarea.selectionStart = textarea.selectionEnd =
-            selectionStart + insertText.length
-        }, 0)
-        return
-      }
-    }
+              setTimeout(() => {
+                textarea.selectionStart = textarea.selectionEnd =
+                  selectionStart + insertText.length
+              }, 0)
+              return
+            }
+          }
 
-    // 3. Enter tanpa Shift: Kirim Pesan
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      submitChat()
-    }
-  }
+          // 3. Enter tanpa Shift: Kirim Pesan
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            submitChat()
+          }
+        }
 
   return (
     <div className="fixed bottom-6 right-6 z-50 font-sans">
@@ -313,8 +327,8 @@ BATASAN KEAMANAN (GUARDRAILS)
           onClick={() => setIsOpen(true)}
           className="flex items-center gap-2 px-4 py-3 rounded-full bg-[#1F3A5F] text-white font-bold shadow-lg shadow-[#1F3A5F]/20 hover:bg-[#3D5A80] hover:scale-105 transition-all cursor-pointer border border-slate-200"
         >
-          <span className="text-lg">VAI</span>
-          <span className="text-xs">Ask Assistant</span>
+            <span className="text-lg">{t('VAI')}</span>
+            <span className="text-xs">{t('Ask Assistant')}</span>
         </button>
       )}
 
@@ -324,13 +338,13 @@ BATASAN KEAMANAN (GUARDRAILS)
           {/* Header */}
           <div className="p-3.5 border-b border-slate-200 bg-[#E0F0FF]/60 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-lg">VAI</span>
+                <span className="text-lg">{t('VAI')}</span>
               <div>
                 <h3 className="text-xs font-bold text-[#1F3A5F]">
-                  AI Assistant
+                    {t('AI Assistant')}
                 </h3>
                 <p className="text-[10px] text-[#3D5A80] font-mono">
-                  Powered by GLM-5.3-Flash | Kuota: {remainingQuota}/{MAX_MONTHLY_LIMIT}
+                    {t('Powered by GLM-5.3-Flash | Kuota: {remainingQuota}/{MAX_MONTHLY_LIMIT}')}
                 </p>
               </div>
             </div>
@@ -366,7 +380,7 @@ BATASAN KEAMANAN (GUARDRAILS)
             {loading && (
               <div className="flex justify-start">
                 <div className="bg-slate-100 text-slate-500 p-2.5 rounded-xl text-xs animate-pulse border border-slate-200">
-                  GLM-5.3-Flash sedang berpikir...
+                    {t('GLM-5.3-Flash sedang berpikir...')}
                 </div>
               </div>
             )}
@@ -384,7 +398,7 @@ BATASAN KEAMANAN (GUARDRAILS)
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Tanyakan sesuatu... (- + spasi untuk bullet)"
+                placeholder={t('Tanyakan sesuatu... (- + spasi untuk bullet)')}
               className="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#1F3A5F] focus:bg-white resize-none max-h-28 leading-relaxed overflow-y-auto"
             />
             <button
@@ -392,7 +406,7 @@ BATASAN KEAMANAN (GUARDRAILS)
               disabled={loading || !input.trim()}
               className="px-3.5 py-2 rounded-xl bg-[#1F3A5F] text-white font-bold text-xs hover:bg-[#3D5A80] disabled:opacity-50 cursor-pointer transition-colors shadow-2xs self-end"
             >
-              Kirim
+                {t('Kirim')}
             </button>
           </form>
         </div>

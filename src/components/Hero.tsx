@@ -1,7 +1,13 @@
 import React from 'react'
-import { useLanguage } from '../context/LanguageContext'
+import { useLanguage } from '../context/LanguageContext.tsx'
 
-const stats = [
+interface StatItem {
+  value: string
+  label: string
+  sub: string
+}
+
+const stats: StatItem[] = [
   { value: '5+', label: 'Years', sub: 'Experience' },
   { value: '10+', label: 'Projects', sub: 'Delivered' },
   { value: '3', label: 'Certifications', sub: 'Holder' },
@@ -12,7 +18,7 @@ export default function Hero() {
   const marqueeText = "Demand Forecasting • Inventory Optimization • GCP BigQuery • Dataform • Python • Apps Script • "
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center px-6 pt-24 pb-16 overflow-hidden max-w-2xl mx-auto">
+    <section className="relative min-h-screen flex flex-col justify-center px-6 pt-24 pb-16 overflow-hidden max-w-5xl mx-auto">
       {/* Background grid */}
       <div
         className="absolute inset-0 opacity-[0.4]"
@@ -52,7 +58,7 @@ export default function Hero() {
 
           {/* Target Role Utama */}
           <h2 className="text-xl sm:text-2xl font-bold text-[#3D5A80] mb-4">
-            {t('Data & Workflow Automation Specialist')}
+            {t('Data & Analytics | Automation & AI')}
           </h2>
 
           {/* Running Marquee Text Section */}
@@ -77,7 +83,7 @@ export default function Hero() {
             {t('View Projects')}
           </a>
           <a
-            href="/pdf/Vincensius Prasetyo Adi CV.pdf"
+            href="/pdf/Vincensius_Prasetyo_Adi_CV.pdf"
             target="_blank"
             rel="noopener noreferrer"
             download="Vincensius_Prasetyo_Adi_CV.pdf"
