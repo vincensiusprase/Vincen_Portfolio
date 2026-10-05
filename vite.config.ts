@@ -15,13 +15,13 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api/chat': {
-          target: 'https://api.z.ai',
+              target: 'https://integrate.api.nvidia.com',
           changeOrigin: true,
-          rewrite: () => '/api/paas/v4/chat/completions',
+              rewrite: () => '/v1/chat/completions',
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
-              if (env.GLM_API_KEY) {
-                proxyReq.setHeader('Authorization', `Bearer ${env.GLM_API_KEY}`)
+                  if (env.NVIDIA_API_KEY) {
+                    proxyReq.setHeader('Authorization', `Bearer ${env.NVIDIA_API_KEY}`)
               }
             })
           },

@@ -1,0 +1,1 @@
+{"model":"nvidia/nemotron-3.5-lightning-30b-a3b","messages":[{"role":"user","content":"jelaskan lebih lanjut tentang Data Engineering, apakah dia menguasai Big Data Processing dengan Apache Spark?"}],"stream":true,"max_tokens":512,"temperature":0.3}

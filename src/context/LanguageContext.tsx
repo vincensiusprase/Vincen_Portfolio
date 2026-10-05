@@ -129,14 +129,14 @@ const idTranslations: Translations = {
         // Chatbot
         'Maaf, Anda telah mencapai batas maksimal (${MAX_MONTHLY_LIMIT} pertanyaan) untuk bulan ini. Silakan hubungi Vincensius secara langsung via LinkedIn atau Email!':
           'Maaf, Anda telah mencapai batas maksimal (${MAX_MONTHLY_LIMIT} pertanyaan) untuk bulan ini. Silakan hubungi Vincensius secara langsung via LinkedIn atau Email!',
-        'Model GLM-5.3-Flash sedang sibuk. Silakan tunggu beberapa saat lalu coba lagi.':
-          'Model GLM-5.3-Flash sedang sibuk. Silakan tunggu beberapa saat lalu coba lagi.',
+        'Model NVIDIA Nemotron sedang sibuk. Silakan tunggu beberapa saat lalu coba lagi.':
+                  'Model NVIDIA Nemotron sedang sibuk. Silakan tunggu beberapa saat lalu coba lagi.',
         'AI Assistant sedang mengalami gangguan. Silakan coba lagi nanti.':
           'AI Assistant sedang mengalami gangguan. Silakan coba lagi nanti.',
         'Tanyakan sesuatu... (- + spasi untuk bullet)':
           'Tanyakan sesuatu... (- + spasi untuk bullet)',
         'Kirim': 'Kirim',
-        'GLM-5.3-Flash sedang berpikir...': 'GLM-5.3-Flash sedang berpikir...',
+                'NVIDIA Nemotron sedang berpikir...': 'NVIDIA Nemotron sedang berpikir...',
       }
 
 const enTranslations: Translations = {
@@ -244,19 +244,19 @@ const enTranslations: Translations = {
       'Swipe cards or select navigation dots to explore other projects.',
     'Maaf, Anda telah mencapai batas maksimal (${MAX_MONTHLY_LIMIT} pertanyaan) untuk bulan ini. Silakan hubungi Vincensius secara langsung via LinkedIn atau Email!':
       'Sorry, you have reached the maximum limit (${MAX_MONTHLY_LIMIT} questions) for this month. Please contact Vincensius directly via LinkedIn or Email!',
-    'Model GLM-5.3-Flash sedang sibuk. Silakan tunggu beberapa saat lalu coba lagi.':
-      'Model GLM-5.3-Flash is busy. Please wait a moment and try again.',
+    'Model NVIDIA Nemotron sedang sibuk. Silakan tunggu beberapa saat lalu coba lagi.':
+          'Model NVIDIA Nemotron is busy. Please wait a moment and try again.',
     'AI Assistant sedang mengalami gangguan. Silakan coba lagi nanti.':
       'AI Assistant is experiencing issues. Please try again later.',
     'Tanyakan sesuatu... (- + spasi untuk bullet)':
       'Ask something... (- + space for bullet)',
     'Kirim': 'Send',
-    'GLM-5.3-Flash sedang berpikir...': 'GLM-5.3-Flash is thinking...',
+        'NVIDIA Nemotron sedang berpikir...': 'NVIDIA Nemotron is thinking...',
     'VAI': 'VAI',
     'Ask Assistant': 'Ask Assistant',
     'AI Assistant': 'AI Assistant',
-    'Powered by GLM-5.3-Flash | Kuota: {remainingQuota}/{MAX_MONTHLY_LIMIT}':
-      'Powered by GLM-5.3-Flash | Quota: {remainingQuota}/{MAX_MONTHLY_LIMIT}',
+        'Powered by NVIDIA | Quota: {remainingQuota}/{MAX_MONTHLY_LIMIT}':
+          'Powered by NVIDIA | Quota: {remainingQuota}/{MAX_MONTHLY_LIMIT}',
         'Jawaban API kosong': 'API response is empty',
             // Technical skills & certifications (same in both languages)
             'GCP BigQuery': 'GCP BigQuery',
