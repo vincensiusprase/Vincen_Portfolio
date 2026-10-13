@@ -95,10 +95,10 @@ const certificationsData: CertificationCategory[] = [
   const visibleItems = expanded ? group.items : group.items.slice(0, 3)
 
   return (
-    <div className="rounded-2xl p-5 bg-white border border-slate-200 shadow-xs">
+    <div className="rounded-2xl p-5 soft-card">
       <div className="flex items-center gap-2.5 mb-4">
         <span className="text-xl">{group.icon}</span>
-        <h3 className="text-xs font-bold text-[#3D5A80] uppercase tracking-widest">
+        <h3 className="text-xs font-bold text-[#F97316] uppercase tracking-widest">
           {t(group.category)}
         </h3>
       </div>
@@ -108,10 +108,10 @@ const certificationsData: CertificationCategory[] = [
           <button
             key={idx}
             onClick={() => onPreview(cert)}
-            className="group w-full text-left flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#3D5A80] hover:bg-slate-100/80 transition-all duration-200 cursor-pointer"
+            className="group w-full text-left flex items-center justify-between p-3 rounded-xl bg-[#FFF7F0] border border-[#F3E7DC] hover:border-[#F97316] hover:bg-[#FFEDD5]/60 transition-all duration-200 cursor-pointer"
           >
             <div className="flex flex-col">
-              <span className="text-sm font-semibold text-slate-800 group-hover:text-[#1F3A5F] transition-colors">
+              <span className="text-sm font-semibold text-slate-800 group-hover:text-[#16264A] transition-colors">
                 {cert.name}
               </span>
               <span className="text-xs text-slate-500">
@@ -119,7 +119,7 @@ const certificationsData: CertificationCategory[] = [
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5 text-xs text-[#1F3A5F] bg-[#E0F0FF] px-2.5 py-1 rounded-lg border border-sky-200 group-hover:bg-[#1F3A5F] group-hover:text-white transition-colors">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-[#F97316] bg-[#FFEDD5] px-2.5 py-1 rounded-lg border border-[#FFD9A8] group-hover:bg-[#F97316] group-hover:text-white group-hover:border-[#F97316] transition-colors">
               <span>{t('Preview')}</span>
               <svg
                 className="w-3.5 h-3.5 transform group-hover:scale-110 transition-transform"
@@ -148,7 +148,7 @@ const certificationsData: CertificationCategory[] = [
       {hasMore && (
         <button
           onClick={() => setExpanded(!expanded)}
-          className="mt-3 w-full py-2 text-xs font-semibold text-[#1F3A5F] bg-[#E0F0FF]/60 hover:bg-[#E0F0FF] border border-sky-200 rounded-xl transition-all duration-200 flex items-center justify-center gap-1 cursor-pointer"
+          className="mt-3 w-full py-2 text-xs font-semibold text-[#F97316] bg-[#FFEDD5]/60 hover:bg-[#FFEDD5] border border-[#FFD9A8] font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-1 cursor-pointer"
         >
           <span>{expanded ? t('Show Less') : `${t('Show More')} (${group.items.length - 3} ${language === 'ID' ? 'lainnya' : 'more'})`}</span>
           <svg
@@ -170,6 +170,7 @@ const certificationsData: CertificationCategory[] = [
 
 export default function PersonalDev() {
   const { t } = useLanguage()
+  const sectionRef = useReveal()
   const [selectedCategory, setSelectedCategory] = useState<string>('Data & AI')
   const [activeCert, setActiveCert] = useState<CertificationItem | null>(null)
 
@@ -181,12 +182,12 @@ export default function PersonalDev() {
       : certificationsData.filter((c) => c.category === selectedCategory)
 
   return (
-    <section id="personal-dev" className="px-6 py-20 max-w-5xl mx-auto">
+    <section ref={sectionRef} id="personal-dev" className="reveal-section px-6 py-20 max-w-5xl mx-auto">
       <SectionHeader title="Personal Development" />
 
-      <div className="mb-8">
-        <h2 className="text-2xl font-black text-[#1F3A5F] leading-tight mb-2">
-          {t('Certificates & ')}<span className="text-[#3D5A80]">{t('Continuous Learning')}</span>
+      <div className="reveal-item mb-8">
+        <h2 className="text-2xl font-black text-[#16264A] leading-tight mb-2">
+          {t('Certificates & ')}<span className="text-[#4A5C8A]">{t('Continuous Learning')}</span>
         </h2>
         <p className="text-xs text-slate-500">
           {t('Klik sertifikat untuk membuka pratinjau dokumen langsung di layar.')}
@@ -194,15 +195,15 @@ export default function PersonalDev() {
       </div>
 
       {/* Filter Category Tabs */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="reveal-item reveal-stagger flex flex-wrap gap-2 mb-8">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
             className={`text-xs px-3.5 py-1.5 rounded-full transition-all border cursor-pointer ${
               selectedCategory === cat
-                ? 'bg-[#1F3A5F] text-white border-[#1F3A5F] font-semibold shadow-xs'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-[#1F3A5F]'
+                ? 'bg-[#F97316] text-white border-[#F97316] font-semibold shadow-sm shadow-orange-500/25'
+                : 'bg-white text-slate-600 border-[#F0E4DA] hover:bg-[#FFEDD5]/60 hover:text-[#F97316]'
             }`}
           >
             {t(cat)}
@@ -211,7 +212,7 @@ export default function PersonalDev() {
       </div>
 
       {/* Grouped Certifications List */}
-      <div className="flex flex-col gap-6">
+      <div className="reveal-item reveal-stagger flex flex-col gap-6">
         {filteredData.map((group) => (
           <CategoryGroup key={group.category} group={group} onPreview={(cert) => setActiveCert(cert)} />
         ))}

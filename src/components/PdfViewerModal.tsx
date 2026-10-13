@@ -49,13 +49,13 @@ function PdfViewerModalContent({ cert, onClose }: PdfViewerModalContentProps) {
         {/* Header Modal */}
         <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
           <div className="flex flex-col">
-            <h3 className="text-sm font-bold text-[#1F3A5F]">{certName}</h3>
+            <h3 className="text-sm font-bold text-[#16264A]">{certName}</h3>
             <p className="text-xs text-slate-500">{t('Issued by ')}{cert.issuer}{certYear}</p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-600 hover:text-[#1F3A5F] bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all duration-200 flex items-center gap-1.5 text-xs font-semibold shadow-xs cursor-pointer"
+            className="p-2 text-slate-600 hover:text-[#16264A] bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all duration-200 flex items-center gap-1.5 text-xs font-semibold shadow-xs cursor-pointer"
           >
             <span>{t('Close')}</span>
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -97,11 +97,11 @@ function PdfViewerModal({ cert, onClose }: PdfViewerModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-[#1F3A5F] mb-2">PDF Preview Error</h3>
+            <h3 className="text-lg font-bold text-[#16264A] mb-2">PDF Preview Error</h3>
             <p className="text-sm text-slate-600 mb-4">Unable to load the PDF certificate. The file may be missing or corrupted.</p>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-[#1F3A5F] text-white text-sm font-semibold rounded-xl hover:bg-[#3D5A80] transition-colors cursor-pointer"
+              className="px-4 py-2 bg-[#16264A] text-white text-sm font-semibold rounded-xl hover:bg-[#4A5C8A] transition-colors cursor-pointer"
             >
               Close
             </button>

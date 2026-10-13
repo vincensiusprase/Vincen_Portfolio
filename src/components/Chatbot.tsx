@@ -56,7 +56,7 @@ function renderFormattedMessage(text: string): React.ReactNode {
       if (part.startsWith('**') && part.endsWith('**')) {
         const boldText = part.slice(2, -2)
         return (
-          <strong key={index} className="font-bold text-[#3D5A80]">
+          <strong key={index} className="font-bold text-[#4A5C8A]">
             {boldText}
           </strong>
         )
@@ -64,7 +64,7 @@ function renderFormattedMessage(text: string): React.ReactNode {
       if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
         const italicText = part.slice(1, -1)
         return (
-          <em key={index} className="italic text-[#3D5A80]">
+          <em key={index} className="italic text-[#4A5C8A]">
             {italicText}
           </em>
         )
@@ -412,7 +412,8 @@ ATURAN TAMPILAN JAWABAN (KERAPIAN VISUAL)
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 px-4 py-3 rounded-full bg-[#1F3A5F] text-white font-bold shadow-lg shadow-[#1F3A5F]/20 hover:bg-[#3D5A80] hover:scale-105 transition-all cursor-pointer border border-slate-200"
+          className="flex items-center gap-2 px-4 py-3 rounded-full text-white font-bold shadow-lg shadow-orange-500/25 hover:scale-105 transition-all cursor-pointer border border-white/20"
+          style={{ background: 'linear-gradient(135deg, #FB923C, #F97316)' }}
         >
             <span className="text-lg">{t('VAI')}</span>
             <span className="text-xs">{t('Ask Assistant')}</span>
@@ -423,14 +424,14 @@ ATURAN TAMPILAN JAWABAN (KERAPIAN VISUAL)
       {isOpen && (
         <div className="w-[340px] sm:w-[380px] h-[480px] bg-white border border-slate-200 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-fadeIn">
           {/* Header */}
-          <div className="p-3.5 border-b border-slate-200 bg-[#E0F0FF]/60 flex items-center justify-between">
+          <div className="p-3.5 border-b border-slate-200 bg-[#FFEDD5]/60 flex items-center justify-between">
             <div className="flex items-center gap-2">
                 <span className="text-lg">{t('VAI')}</span>
               <div>
-                <h3 className="text-xs font-bold text-[#1F3A5F]">
+                <h3 className="text-xs font-bold text-[#16264A]">
                     {t('AI Assistant')}
                 </h3>
-                <p className="text-[10px] text-[#3D5A80] font-mono">
+                <p className="text-[10px] text-[#4A5C8A] font-mono">
                                                                     {t('Powered by NVIDIA | Quota: {remainingQuota}/{MAX_MONTHLY_LIMIT}')
                                       .replace('{remainingQuota}', remainingQuota.toString())
                                       .replace('{MAX_MONTHLY_LIMIT}', MAX_MONTHLY_LIMIT.toString())}
@@ -439,7 +440,7 @@ ATURAN TAMPILAN JAWABAN (KERAPIAN VISUAL)
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-slate-400 hover:text-[#1F3A5F] text-xs p-1 cursor-pointer"
+              className="text-slate-400 hover:text-[#16264A] text-xs p-1 cursor-pointer"
             >
               X
             </button>
@@ -458,7 +459,7 @@ ATURAN TAMPILAN JAWABAN (KERAPIAN VISUAL)
                 <div
                   className={`max-w-[88%] p-3 rounded-2xl text-xs leading-relaxed whitespace-pre-wrap ${
                     msg.sender === 'user'
-                      ? 'bg-[#1F3A5F] text-white self-end ml-auto shadow-xs'
+                      ? 'bg-[#F97316] text-white self-end ml-auto shadow-xs'
                       : 'bg-slate-100 text-slate-800 border border-slate-200/80 shadow-2xs self-start mr-auto'
                   }`}
                 >
@@ -488,12 +489,12 @@ ATURAN TAMPILAN JAWABAN (KERAPIAN VISUAL)
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
                 placeholder={t('Tanyakan sesuatu... (- + spasi untuk bullet)')}
-              className="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#1F3A5F] focus:bg-white resize-none max-h-28 leading-relaxed overflow-y-auto"
+              className="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#16264A] focus:bg-white resize-none max-h-28 leading-relaxed overflow-y-auto"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="px-3.5 py-2 rounded-xl bg-[#1F3A5F] text-white font-bold text-xs hover:bg-[#3D5A80] disabled:opacity-50 cursor-pointer transition-colors shadow-2xs self-end"
+              className="px-3.5 py-2 rounded-xl bg-[#F97316] text-white font-bold text-xs hover:bg-[#EA580C] disabled:opacity-50 cursor-pointer transition-colors shadow-2xs self-end"
             >
                 {t('Kirim')}
             </button>

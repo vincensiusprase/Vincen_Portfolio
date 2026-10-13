@@ -9,14 +9,16 @@ export function useReveal(delay = 0): React.RefObject<HTMLElement | null> {
 
     el.style.transitionDelay = `${delay}ms`
 
+    if (!('IntersectionObserver' in window)) {
+      el.classList.add('visible')
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add('visible')
-          observer.disconnect()
-        }
+        el.classList.toggle('visible', entry.isIntersecting)
       },
-      { threshold: 0.1 }
+      { threshold: 0, rootMargin: '0px 0px -8% 0px' }
     )
 
     observer.observe(el)

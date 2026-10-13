@@ -58,6 +58,19 @@ const idTranslations: Translations = {
   'What I am looking for:': 'Yang saya cari:',
   'a company that wants to reduce waste and manual work through data and AI, and needs someone who understands both the operations and the technology to make it happen.': 'perusahaan yang ingin mengurangi pemborosan dan pekerjaan manual melalui data dan AI, dan membutuhkan seseorang yang memahami baik operasi maupun teknologi untuk mewujudkannya.',
   'Open to conversations on data-driven operations, supply chain analytics, and manufacturing digital transformation.': 'Terbuka untuk diskusi tentang operasi berbasis data, analitik rantai pasokan, dan transformasi digital manufaktur.',
+  'Core Services': 'Layanan Utama',
+  'Services I can provide to help your business grow' : 'Layanan yang dapat saya berikan untuk membantu bisnis Anda berkembang',
+  'Data Analytics': 'Analisis Data',
+  'Business Intelligence': 'Business Intelligence',
+  'Analytics Engineer': 'Analytics Engineer',
+  'Supply Chain Analytics': 'Analitik Rantai Pasokan',
+  'Demand Planner': 'Perencana Permintaan',
+  'End-to-end data pipelines, ETL/ELT, data modeling & visualization': 'Pipeline data end-to-end, ETL/ELT, pemodelan data & visualisasi',
+  'Power BI, Looker Studio, dashboards & executive reporting': 'Power BI, Looker Studio, dashboard & pelaporan eksekutif',
+  'dbt, Dataform, SQL optimization, data quality & testing': 'dbt, Dataform, optimasi SQL, kualitas data & pengujian',
+  'Demand forecasting, inventory optimization, S&OP, MRP': 'Peramalan permintaan, optimasi persediaan, S&OP, MRP',
+  'Statistical forecasting, consensus planning, bias reduction': 'Peramalan statistik, perencanaan konsensus, pengurangan bias',
+  '💡 Scroll horizontal untuk melihat semua layanan': '💡 Scroll horizontal untuk melihat semua layanan',
   'Data Analysis & Programming': 'Analisis Data & Pemrograman',
     'DevOps & Version Control': 'DevOps & Kontrol Versi',
     'Google Cloud Platform (GCP)': 'Google Cloud Platform (GCP)',
@@ -94,6 +107,28 @@ const idTranslations: Translations = {
         'Punya proyek data atau automation? Mari diskusi.':
           'Punya proyek data atau otomasi? Mari berdiskusi.',
         'Data & Workflow Automation Specialist': 'Spesialis Data & Otomasi Workflow',
+        'Built automated ELT/ETL pipelines ingesting 100+ fragmented sources into BigQuery via Cloud Run + Cloud Scheduler':
+          'Membangun pipeline ELT/ETL otomatis yang mengintegrasikan 100+ sumber terfragmentasi ke BigQuery via Cloud Run + Cloud Scheduler',
+        'Modeled modular Dataform (SQLX) layers with data quality assertions, lineage tracking, and version control':
+          'Memodelkan lapisan Dataform (SQLX) modular dengan pengujian kualitas data, pelacakan lineage, dan kontrol versi',
+        'Established single source of truth + IAM governance, keeping 100% system reliability with Cloud Logging alerts':
+          'Membangun single source of truth + tata kelola IAM, menjaga keandalan sistem 100% dengan peringatan Cloud Logging',
+        'Shipped executive Looker Studio dashboards + reverse ETL to Sheets; automated hiring flow saving IDR 6.3M/month and scheduling effort by 90%':
+          'Menghadirkan dashboard eksekutif Looker Studio + reverse ETL ke Sheets; mengotomasi rekrutmen dengan hemat Rp6,3 jt/bulan dan memangkas effort penjadwalan hingga 90%',
+        'Directed SCM execution keeping 100% value-chain synchronization and maximized On-Time Delivery (OTD)':
+          'Mengarahkan eksekusi SCM dengan sinkronisasi rantai nilai 100% dan memaksimalkan On-Time Delivery (OTD)',
+        'Ran demand forecasting + safety stock / reorder point / ABC / RFM models on 18-month rolling calculations':
+          'Menjalankan model peramalan permintaan + safety stock / reorder point / ABC / RFM dengan kalkulasi rolling 18 bulan',
+        'Led 3+ digitalization projects with SOPs, cutting non-conformity records and warehousing costs':
+          'Memimpin 3+ proyek digitalisasi dengan SOP, memangkas catatan non-konformitas dan biaya pergudangan',
+        'Drove Kaizen / 5S initiatives optimizing production processes via data-driven process reengineering':
+          'Mendorong inisiatif Kaizen / 5S untuk mengoptimalkan proses produksi melalui reengineering berbasis data',
+        'Improved operational efficiency and reduced waste across manufacturing workflows':
+          'Meningkatkan efisiensi operasional dan mengurangi pemborosan di seluruh alur kerja manufaktur',
+        'Rotated across departments delivering cross-functional projects in operations and supply chain':
+          'Rotasi lintas departemen dan menuntaskan proyek lintas fungsi di operasi dan supply chain',
+        'Built data-driven reporting foundations later scaled into company-wide BI dashboards':
+          'Membangun fondasi pelaporan berbasis data yang kemudian diskalakan menjadi dashboard BI seluruh perusahaan',
         'Architected end-to-end automated ELT/ETL pipelines, modern data modeling with Dataform & BigQuery, GCP infrastructure administration, AI automation workflows (Document AI & Apps Script), and executive Looker Studio dashboards.':
           'Merancang pipeline ELT/ETL otomatis end-to-end, pemodelan data modern dengan Dataform & BigQuery, administrasi infrastruktur GCP, alur kerja otomasi AI (Document AI & Apps Script), dan dashboard Looker Studio untuk eksekutif.',
         'Led SCM strategic execution, inventory optimization & demand forecasting models, process digitalization (3+ strategic optimization projects), and integrated Production & Finance workflows via Looker Studio.':
@@ -187,6 +222,18 @@ const enTranslations: Translations = {
   'What I am looking for:': 'What I am looking for:',
   'a company that wants to reduce waste and manual work through data and AI, and needs someone who understands both the operations and the technology to make it happen.': 'a company that wants to reduce waste and manual work through data and AI, and needs someone who understands both the operations and the technology to make it happen.',
   'Open to conversations on data-driven operations, supply chain analytics, and manufacturing digital transformation.': 'Open to conversations on data-driven operations, supply chain analytics, and manufacturing digital transformation.',
+  'Core Services': 'Core Services',
+  'Data Analytics': 'Data Analytics',
+  'Business Intelligence': 'Business Intelligence',
+  'Analytics Engineer': 'Analytics Engineer',
+  'Supply Chain Analytics': 'Supply Chain Analytics',
+  'Demand Planner': 'Demand Planner',
+  'End-to-end data pipelines, ETL/ELT, data modeling & visualization': 'End-to-end data pipelines, ETL/ELT, data modeling & visualization',
+  'Power BI, Looker Studio, dashboards & executive reporting': 'Power BI, Looker Studio, dashboards & executive reporting',
+  'dbt, Dataform, SQL optimization, data quality & testing': 'dbt, Dataform, SQL optimization, data quality & testing',
+  'Demand forecasting, inventory optimization, S&OP, MRP': 'Demand forecasting, inventory optimization, S&OP, MRP',
+  'Statistical forecasting, consensus planning, bias reduction': 'Statistical forecasting, consensus planning, bias reduction',
+  '💡 Scroll horizontal untuk melihat semua layanan': '💡 Scroll horizontally to see all services',
   'Data Analysis & Programming': 'Data Analysis & Programming',
   'DevOps & Version Control': 'DevOps & Version Control',
   'Google Cloud Platform (GCP)': 'Google Cloud Platform (GCP)',
@@ -220,6 +267,17 @@ const enTranslations: Translations = {
   'Klik sertifikat untuk membuka pratinjau dokumen langsung di layar.': 'Click a certificate to open a document preview directly on screen.',
   'Punya proyek data atau automation? Mari diskusi.': 'Have a data or automation project? Let\'s discuss.',
   'Data & Workflow Automation Specialist': 'Data & Workflow Automation Specialist',
+  'Built automated ELT/ETL pipelines ingesting 100+ fragmented sources into BigQuery via Cloud Run + Cloud Scheduler': 'Built automated ELT/ETL pipelines ingesting 100+ fragmented sources into BigQuery via Cloud Run + Cloud Scheduler',
+  'Modeled modular Dataform (SQLX) layers with data quality assertions, lineage tracking, and version control': 'Modeled modular Dataform (SQLX) layers with data quality assertions, lineage tracking, and version control',
+  'Established single source of truth + IAM governance, keeping 100% system reliability with Cloud Logging alerts': 'Established single source of truth + IAM governance, keeping 100% system reliability with Cloud Logging alerts',
+  'Shipped executive Looker Studio dashboards + reverse ETL to Sheets; automated hiring flow saving IDR 6.3M/month and scheduling effort by 90%': 'Shipped executive Looker Studio dashboards + reverse ETL to Sheets; automated hiring flow saving IDR 6.3M/month and scheduling effort by 90%',
+  'Directed SCM execution keeping 100% value-chain synchronization and maximized On-Time Delivery (OTD)': 'Directed SCM execution keeping 100% value-chain synchronization and maximized On-Time Delivery (OTD)',
+  'Ran demand forecasting + safety stock / reorder point / ABC / RFM models on 18-month rolling calculations': 'Ran demand forecasting + safety stock / reorder point / ABC / RFM models on 18-month rolling calculations',
+  'Led 3+ digitalization projects with SOPs, cutting non-conformity records and warehousing costs': 'Led 3+ digitalization projects with SOPs, cutting non-conformity records and warehousing costs',
+  'Drove Kaizen / 5S initiatives optimizing production processes via data-driven process reengineering': 'Drove Kaizen / 5S initiatives optimizing production processes via data-driven process reengineering',
+  'Improved operational efficiency and reduced waste across manufacturing workflows': 'Improved operational efficiency and reduced waste across manufacturing workflows',
+  'Rotated across departments delivering cross-functional projects in operations and supply chain': 'Rotated across departments delivering cross-functional projects in operations and supply chain',
+  'Built data-driven reporting foundations later scaled into company-wide BI dashboards': 'Built data-driven reporting foundations later scaled into company-wide BI dashboards',
   'Demand Forecasting': 'Demand Forecasting',
   'Inventory Optimization': 'Inventory Optimization',
   'Architected end-to-end automated ELT/ETL pipelines, modern data modeling with Dataform & BigQuery, GCP infrastructure administration, AI automation workflows (Document AI & Apps Script), and executive Looker Studio dashboards.':

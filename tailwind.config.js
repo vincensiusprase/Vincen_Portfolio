@@ -8,17 +8,21 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          primary100: '#1F3A5F',
-          primary200: '#4d648d',
-          primary300: '#acc2ef',
-          accent100: '#3D5A80',
-          accent200: '#cee8ff',
-          text100: '#FFFFFF',
-          text200: '#e0e0e0',
-          bg100: '#0F1C2E',
-          bg200: '#1f2b3e',
-          bg300: '#374357',
+          primary100: '#16264A',
+          primary200: '#4A5C8A',
+          primary300: '#22345F',
+          accent100: '#F97316',
+          accent200: '#FFEDD5',
+          accent300: '#FFD9A8',
+          text100: '#141C2E',
+          text200: '#55607A',
+          bg100: '#FFF9F4',
+          bg200: '#FFF1E6',
+          bg300: '#F0E4DA',
         }
+      },
+      fontFamily: {
+        display: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
       }
     },
   },

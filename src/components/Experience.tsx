@@ -9,7 +9,7 @@ interface ExperienceItem {
   company: string
   period: string
   type: string
-  desc: string
+  desc: string[]
   tags: string[]
   current: boolean
 }
@@ -38,7 +38,12 @@ const experiences: ExperienceItem[] = [
     company: 'PT Intan Safety Glass (Glass Processor Industry)',
     period: 'Jan 2024 – Present',
     type: 'Full-time',
-    desc: 'Architected end-to-end automated ELT/ETL pipelines, modern data modeling with Dataform & BigQuery, GCP infrastructure administration, AI automation workflows (Document AI & Apps Script), and executive Looker Studio dashboards.',
+    desc: [
+      'Built automated ELT/ETL pipelines ingesting 100+ fragmented sources into BigQuery via Cloud Run + Cloud Scheduler',
+      'Modeled modular Dataform (SQLX) layers with data quality assertions, lineage tracking, and version control',
+      'Established single source of truth + IAM governance, keeping 100% system reliability with Cloud Logging alerts',
+      'Shipped executive Looker Studio dashboards + reverse ETL to Sheets; automated hiring flow saving IDR 6.3M/month and scheduling effort by 90%',
+    ],
     tags: ['BigQuery', 'GCP', 'Dataform', 'Cloud Run', 'Python', 'Apps Script', 'Looker Studio', 'Data Governance'],
     current: true,
   },
@@ -47,7 +52,11 @@ const experiences: ExperienceItem[] = [
     company: 'PT Intan Safety Glass (Glass Processor Industry)',
     period: 'Apr 2021 – Dec 2023',
     type: 'Full-time',
-    desc: 'Led SCM strategic execution, inventory optimization & demand forecasting models, process digitalization (3+ strategic optimization projects), and integrated Production & Finance workflows via Looker Studio.',
+    desc: [
+      'Directed SCM execution keeping 100% value-chain synchronization and maximized On-Time Delivery (OTD)',
+      'Ran demand forecasting + safety stock / reorder point / ABC / RFM models on 18-month rolling calculations',
+      'Led 3+ digitalization projects with SOPs, cutting non-conformity records and warehousing costs',
+    ],
     tags: ['Supply Chain', 'Demand Forecasting', 'Inventory Optimization', 'Process Digitalization', 'SOP'],
     current: false,
   },
@@ -56,7 +65,10 @@ const experiences: ExperienceItem[] = [
     company: 'PT Intan Safety Glass (Glass Processor Industry)',
     period: 'Apr 2021 — Apr 2022',
     type: 'Contract',
-    desc: 'Implemented continuous improvement initiatives, optimized production processes, and enhanced operational efficiency through data-driven strategies and process reengineering.',
+    desc: [
+      'Drove Kaizen / 5S initiatives optimizing production processes via data-driven process reengineering',
+      'Improved operational efficiency and reduced waste across manufacturing workflows',
+    ],
     tags: ['5S', 'Kaizen', 'Process Optimization', 'Operational Efficiency', 'Data-Driven Strategies'],
     current: false,
   },
@@ -65,11 +77,23 @@ const experiences: ExperienceItem[] = [
     company: 'PT Intan Safety Glass (Glass Processor Industry)',
     period: 'Apr 2021 — Apr 2022',
     type: 'Contract',
-    desc: 'Participated in a comprehensive management training program, gaining exposure to various departments and functions within the organization, and contributing to cross-functional projects.',
+    desc: [
+      'Rotated across departments delivering cross-functional projects in operations and supply chain',
+      'Built data-driven reporting foundations later scaled into company-wide BI dashboards',
+    ],
     tags: ['Management Training', 'Cross-Functional Collaboration', 'Data-Driven Strategies'],
     current: false,
   }
 ]
+
+const experienceToolLogos: Record<string, string> = {
+  BigQuery: '/images/tools/bigquery.svg',
+  GCP: '/images/tools/google_cloud-icon.svg',
+  'Cloud Run': '/images/tools/google_cloud_run-icon.svg',
+  Python: '/images/tools/python-icon.svg',
+  'Apps Script': '/images/tools/google-app-script.svg',
+  'Looker Studio': '/images/tools/Looker.svg',
+}
 
 const educationAndCertifications: EducationAndCertifications = {
   education: {
@@ -91,16 +115,17 @@ const educationAndCertifications: EducationAndCertifications = {
       file: '/pdf/BNSP Data Analyst.pdf'
     },
     {
-      title: 'KNIME L1',
-      issuer: 'KNIME',
-      year: '2025',
-      file: '/pdf/KNIME L1.pdf'
+      title: 'Industry 4.0 Transformation Manager',
+      issuer: 'BNSP',
+      year: '2026',
+      file: 'pdf/BNSP Transformasi Digital 4 Manager Vincen.pdf'
     },
   ],
 }
 
 export default function Experience() {
   const { t, language } = useLanguage()
+  const sectionRef = useReveal()
   const [activeCert, setActiveCert] = useState(null)
   const [showAll, setShowAll] = useState(false)
 
@@ -108,42 +133,42 @@ export default function Experience() {
   const hasMore = experiences.length > 2
 
   return (
-    <section id="experience" className="px-6 py-20 max-w-5xl mx-auto">
+    <section ref={sectionRef} id="experience" className="reveal-section px-6 py-20 max-w-5xl mx-auto">
       <SectionHeader title="Experience" />
 
       {/* Work Experience Timeline */}
-      <div className="relative mb-16">
+      <div className="reveal-item relative mb-16">
         {/* Timeline vertical line */}
         <div
           className="absolute left-4 top-2 bottom-2 w-px"
           style={{
             background:
-              'linear-gradient(to bottom, #1F3A5F, rgba(61,90,128,0.3), transparent)',
+              'linear-gradient(to bottom, #F97316, rgba(249,115,22,0.25), transparent)',
           }}
         />
 
-        <div className="flex flex-col gap-10">
+        <div className="reveal-stagger flex flex-col gap-10">
           {visibleExperiences.map((exp) => (
-            <div key={exp.role} className="flex gap-6 transition-all duration-300 animate-fadeIn">
+            <div key={exp.role} className="flex gap-6 transition-all duration-300">
               {/* Dot */}
               <div className="relative flex-shrink-0 mt-1">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center z-10 relative ${
                     exp.current
-                      ? 'bg-[#E0F0FF] border border-[#1F3A5F]'
-                      : 'border border-slate-300 bg-white'
+                      ? 'bg-[#FFEDD5] border border-[#F97316]'
+                      : 'border border-[#F0E4DA] bg-white'
                   }`}
                 >
                   <div
                     className={`w-2.5 h-2.5 rounded-full ${
-                      exp.current ? 'bg-[#1F3A5F]' : 'bg-slate-400'
+                      exp.current ? 'bg-[#F97316]' : 'bg-slate-400'
                     }`}
                   />
                 </div>
                 {exp.current && (
                   <div
                     className="absolute inset-0 rounded-full animate-ping opacity-25"
-                    style={{ background: '#1F3A5F' }}
+                    style={{ background: '#F97316' }}
                   />
                 )}
               </div>
@@ -151,31 +176,42 @@ export default function Experience() {
               {/* Content */}
               <div className="flex-1 pb-2">
                 <div className="flex items-start justify-between gap-2 mb-1">
-                  <h3 className="text-base font-bold text-[#1F3A5F]">{t(exp.role)}</h3>
+                  <h3 className="text-base font-bold text-[#16264A]">{t(exp.role)}</h3>
                   {exp.current && (
-                    <span className="text-xs font-semibold text-[#1F3A5F] bg-[#E0F0FF] border border-sky-200 rounded-full px-2.5 py-0.5 whitespace-nowrap flex-shrink-0">
+                    <span className="text-xs font-bold text-white rounded-full px-3 py-0.5 whitespace-nowrap flex-shrink-0 shadow-sm"
+                      style={{ background: 'linear-gradient(135deg, #FB923C, #F97316)' }}>
                       {t('Present')}
                     </span>
                   )}
                 </div>
-                <p className="text-xs font-medium text-[#3D5A80] mb-0.5">
+                <p className="text-xs font-medium text-[#F97316] mb-0.5">
                   {exp.company}
                 </p>
                 <p className="text-xs text-slate-400 mb-3">
                   {exp.period} • {t(exp.type)}
                 </p>
-                <p className="text-xs text-slate-600 leading-relaxed mb-4">
-                  {t(exp.desc)}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {exp.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs text-slate-700 bg-slate-100 border border-slate-200/80 rounded-full px-2.5 py-0.5"
-                    >
-                      {tag}
-                    </span>
+                <ul className="text-xs text-slate-600 leading-relaxed mb-4 space-y-1.5 list-none pl-0">
+                  {exp.desc.map((point) => (
+                    <li key={point} className="flex gap-2">
+                      <span className="text-[#F97316] font-bold flex-shrink-0">-</span>
+                      <span>{t(point)}</span>
+                    </li>
                   ))}
+                </ul>
+                <div className="flex flex-wrap gap-1.5">
+                  {exp.tags.map((tag) => {
+                    const logo = experienceToolLogos[tag]
+
+                    return (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center gap-1.5 text-xs text-slate-700 bg-slate-100 border border-slate-200/80 rounded-full px-2.5 py-0.5"
+                      >
+                        {logo && <img src={logo} alt="" className="h-3.5 w-3.5 object-contain" />}
+                        {tag}
+                      </span>
+                    )
+                  })}
                 </div>
               </div>
             </div>
@@ -188,7 +224,7 @@ export default function Experience() {
             <button
               type="button"
               onClick={() => setShowAll((prev) => !prev)}
-              className="text-xs font-semibold text-[#1F3A5F] bg-[#E0F0FF]/60 hover:bg-[#E0F0FF] border border-sky-200 rounded-xl px-4 py-2 transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-2xs"
+              className="text-xs font-semibold text-[#16264A] bg-[#FFEDD5]/60 hover:bg-[#FFEDD5] border border-[#FFD9A8] rounded-xl px-4 py-2 transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-2xs"
             >
               <span>{showAll ? t('Show Less') : `${t('Show More')} (${experiences.length - 2} more)`}</span>
               <svg
@@ -208,19 +244,19 @@ export default function Experience() {
       </div>
 
       {/* Education & Certifications Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-200">
+      <div className="reveal-item reveal-stagger grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-200">
         {/* Education */}
-        <div className="rounded-2xl p-5 border border-slate-200 bg-white shadow-xs">
+        <div className="rounded-2xl p-5 panel-soft shadow-xs">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-lg">🎓</span>
-            <h4 className="text-xs font-bold text-[#3D5A80] uppercase tracking-widest">
+            <h4 className="text-xs font-bold text-[#4A5C8A] uppercase tracking-widest">
               {t('Education')}
             </h4>
           </div>
-          <h5 className="text-sm font-bold text-[#1F3A5F] mb-1">
+          <h5 className="text-sm font-bold text-[#16264A] mb-1">
             {t(educationAndCertifications.education.degree)}
           </h5>
-          <p className="text-xs text-[#3D5A80] mb-1">
+          <p className="text-xs text-[#4A5C8A] mb-1">
             {t(educationAndCertifications.education.institution)}
           </p>
           <p className="text-xs text-slate-400">
@@ -229,10 +265,10 @@ export default function Experience() {
         </div>
 
         {/* Certifications */}
-        <div className="rounded-2xl p-5 border border-slate-200 bg-white shadow-xs">
+        <div className="rounded-2xl p-5 panel-soft shadow-xs">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-lg">📜</span>
-            <h4 className="text-xs font-bold text-[#3D5A80] uppercase tracking-widest">
+            <h4 className="text-xs font-bold text-[#4A5C8A] uppercase tracking-widest">
               {t('Certifications')}
             </h4>
           </div>
@@ -243,11 +279,11 @@ export default function Experience() {
                 onClick={() => setActiveCert(cert)}
                 className="group w-full text-left flex items-center justify-between text-xs p-2 rounded-xl transition-all duration-200 hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer"
               >
-                <span className="font-semibold text-slate-800 group-hover:text-[#1F3A5F] flex items-center gap-1.5 transition-colors">
+                <span className="font-semibold text-slate-800 group-hover:text-[#16264A] flex items-center gap-1.5 transition-colors">
                   {cert.title}{' '}
                   <span className="text-slate-400 font-normal">{t('by')} {cert.issuer}</span>
                   <svg
-                    className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#1F3A5F] opacity-0 group-hover:opacity-100 transition-all transform group-hover:scale-110"
+                    className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#16264A] opacity-0 group-hover:opacity-100 transition-all transform group-hover:scale-110"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -265,7 +301,7 @@ export default function Experience() {
                     />
                   </svg>
                 </span>
-                <span className="text-[#1F3A5F] bg-[#E0F0FF] px-2 py-0.5 rounded-md border border-sky-200 text-[10px] font-mono group-hover:bg-[#1F3A5F] group-hover:text-white transition-colors">
+                <span className="text-[#16264A] bg-[#FFEDD5] px-2 py-0.5 rounded-md border border-[#FFD9A8] text-[10px] font-mono group-hover:bg-[#16264A] group-hover:text-white transition-colors">
                   {cert.year}
                 </span>
               </button>

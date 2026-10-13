@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useReveal } from '../hooks/useReveal.ts'
 import { SectionHeader } from './About.tsx'
 import { useLanguage } from '../context/LanguageContext.tsx'
 import ErrorBoundary from './ErrorBoundary.tsx'
@@ -15,7 +16,6 @@ interface FeaturedProject {
   name: string
   desc: string
   tags: string[]
-  tagColors: string[]
   accent: string
   icon: string
   link: string
@@ -43,7 +43,7 @@ interface VideoModalProps {
   language: 'ID' | 'EN'
 }
 
-// Daftar Proyek Utama (Carousel Slider)
+// Daftar proyek unggulan
 const featuredProjects: FeaturedProject[] = [
   {
     id: 'recruitment-automation',
@@ -51,7 +51,6 @@ const featuredProjects: FeaturedProject[] = [
     name: 'End-to-End Recruitment Automation',
     desc: 'Automated the end-to-end hiring workflow using Document AI, DeepSeek, Cloud Run, and Google Workspace, achieving total monthly cost savings of IDR 6.3 million.',
     tags: ['Document AI', 'DeepSeek', 'Cloud Run', 'Google Workspace'],
-    tagColors: ['violet', 'cyan', 'sky', 'emerald'],
     accent: '#8b5cf6',
     icon: '🤖',
     link: 'https://github.com/vincensiusprase/App_Script_Personal_Project',
@@ -67,7 +66,6 @@ const featuredProjects: FeaturedProject[] = [
     name: 'End-to-End Company Data Architecture',
     desc: 'Built end-to-end automated pipelines, data models, and CI/CD workflows from multiple sources to BigQuery and Looker Studio using GCP, Dataform, and GitHub.',
     tags: ['BigQuery', 'GCP', 'Dataform', 'Looker Studio', 'CI/CD'],
-    tagColors: ['cyan', 'sky', 'violet', 'emerald', 'gray'],
     accent: '#06b6d4',
     icon: '☁️',
     link: 'https://github.com/vincensiusprase/App_Script_Personal_Project',
@@ -80,10 +78,9 @@ const featuredProjects: FeaturedProject[] = [
   {
     id: 'rag',
     category: 'AI Engineering',
-    title: 'RAG FMEA Maintenance Bot',
+    name: 'RAG FMEA Maintenance Bot',
     desc: 'A Discord bot for searching and analyzing Failure Mode and Effects Analysis (FMEA) data. The bot retrieves FMEA records and corrective steps from Vertex AI Discovery Engine, uses DeepSeek to generate responses, and stores per-session conversation history in Google Cloud Firestore.',
     tags: ['Python', 'LangChain', 'OpenAI API', 'RAG'],
-    tagColors: ['violet', 'cyan', 'sky', 'emerald', 'emerald'],
     accent: '#10b981',
     icon: '📦',
     link: 'https://github.com/vincensiusprase/portofolio_recap/tree/main/05_ai_engineer/rag_fmea',
@@ -99,7 +96,6 @@ const featuredProjects: FeaturedProject[] = [
     name: 'Dynamic Safety Stock & Customer Analytics',
     desc: 'Automated 18-month rolling calculations for safety stock, reorder point, ABC analysis, customer tiering, and RFM analysis using BigQuery, Cloud Run, and Cloud Scheduler.',
     tags: ['BigQuery', 'Cloud Run', 'Customer Tiering', 'RFM Analysis'],
-    tagColors: ['cyan', 'sky', 'violet', 'amber'],
     accent: '#f59e0b',
     icon: '📈',
     link: 'https://github.com/vincensiusprase/App_Script_Personal_Project',
@@ -148,16 +144,19 @@ const moreProjects: MoreProject[] = [
   },
 ]
 
-const categories = ['All', 'Business Intelligence', 'Data Engineering', 'Data Science', 'AI Engineering']
-
-const tagColorMap = {
-  cyan: 'text-cyan-900 bg-cyan-100 border-cyan-200',
-  sky: 'text-sky-900 bg-sky-100 border-sky-200',
-  emerald: 'text-emerald-900 bg-emerald-100 border-emerald-200',
-  violet: 'text-violet-900 bg-violet-100 border-violet-200',
-  amber: 'text-amber-900 bg-amber-100 border-amber-200',
-  gray: 'text-slate-700 bg-slate-100 border-slate-200',
+const projectToolLogos: Record<string, string> = {
+  BigQuery: '/images/tools/bigquery.svg',
+  GCP: '/images/tools/google_cloud-icon.svg',
+  'Cloud Run': '/images/tools/google_cloud_run-icon.svg',
+  Python: '/images/tools/python-icon.svg',
+  'Document AI': '/images/tools/Document%20AI.svg',
+  'Looker Studio': '/images/tools/Looker.svg',
+  'Pub Sub': '/images/tools/PubSub.svg',
+  'Cloud Scheduler': '/images/tools/Cloud%20Scheduler.svg',
+  'Vertex AI': '/images/tools/Vertex%20AI.svg',
 }
+
+const categories = ['All', 'Business Intelligence', 'Data Engineering', 'Data Science', 'AI Engineering']
 
 // Modal Component untuk Slideshow Galeri Foto Proyek
 function ImageSlideshowModalContent({ project, onClose }: ImageSlideshowModalProps) {
@@ -186,14 +185,14 @@ function ImageSlideshowModalContent({ project, onClose }: ImageSlideshowModalPro
       >
         <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
           <div>
-            <h3 className="text-sm font-bold text-[#1F3A5F]">{project.name}</h3>
+            <h3 className="text-sm font-bold text-[#16264A]">{project.name}</h3>
             <p className="text-[10px] text-slate-500">
               Image {currentIndex + 1} of {project.images.length}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-500 hover:text-[#1F3A5F] bg-white hover:bg-slate-100 border border-slate-200 rounded-xl text-xs transition-colors cursor-pointer shadow-xs"
+            className="p-1.5 text-slate-500 hover:text-[#16264A] bg-white hover:bg-slate-100 border border-slate-200 rounded-xl text-xs transition-colors cursor-pointer shadow-xs"
           >
             ✕
           </button>
@@ -213,13 +212,13 @@ function ImageSlideshowModalContent({ project, onClose }: ImageSlideshowModalPro
             <>
               <button
                 onClick={handlePrev}
-                className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 border border-slate-300 text-[#1F3A5F] hover:bg-[#1F3A5F] hover:text-white transition-all text-xs cursor-pointer shadow-md"
+                className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 border border-slate-300 text-[#16264A] hover:bg-[#16264A] hover:text-white transition-all text-xs cursor-pointer shadow-md"
               >
                 ◀
               </button>
               <button
                 onClick={handleNext}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 border border-slate-300 text-[#1F3A5F] hover:bg-[#1F3A5F] hover:text-white transition-all text-xs cursor-pointer shadow-md"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 border border-slate-300 text-[#16264A] hover:bg-[#16264A] hover:text-white transition-all text-xs cursor-pointer shadow-md"
               >
                 ▶
               </button>
@@ -235,7 +234,7 @@ function ImageSlideshowModalContent({ project, onClose }: ImageSlideshowModalPro
                 onClick={() => setCurrentIndex(idx)}
                 className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
                   currentIndex === idx
-                    ? 'bg-[#1F3A5F] w-5'
+                    ? 'bg-[#16264A] w-5'
                     : 'bg-slate-300 hover:bg-slate-400'
                 }`}
               />
@@ -267,11 +266,11 @@ function ImageSlideshowModal({ project, onClose }: ImageSlideshowModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-[#1F3A5F] mb-2">Image Gallery Error</h3>
+            <h3 className="text-lg font-bold text-[#16264A] mb-2">Image Gallery Error</h3>
             <p className="text-sm text-slate-600 mb-4">Unable to load the project images. Please try again.</p>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-[#1F3A5F] text-white text-sm font-semibold rounded-xl hover:bg-[#3D5A80] transition-colors cursor-pointer"
+              className="px-4 py-2 bg-[#16264A] text-white text-sm font-semibold rounded-xl hover:bg-[#4A5C8A] transition-colors cursor-pointer"
             >
               Close
             </button>
@@ -286,20 +285,35 @@ function ImageSlideshowModal({ project, onClose }: ImageSlideshowModalProps) {
 
 export default function Projects() {
   const { t, language } = useLanguage()
-  const [activeIndex, setActiveIndex] = useState<number>(0)
+  const sectionRef = useReveal()
   const [activeCategory, setActiveCategory] = useState<string>('All')
   const [selectedGalleryProject, setSelectedGalleryProject] = useState<FeaturedProject | null>(null)
   const [selectedVideo, setSelectedVideo] = useState<{ url: string; name: string } | null>(null)
 
-  const currentProject = featuredProjects[activeIndex]
+  useEffect(() => {
+    const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.project-reveal')
+    if (!cards) return
 
-  const handleNextSlide = () => {
-    setActiveIndex((prev) => (prev + 1) % featuredProjects.length)
-  }
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach((card) => card.classList.add('visible'))
+      return
+    }
 
-  const handlePrevSlide = () => {
-    setActiveIndex((prev) => (prev - 1 + featuredProjects.length) % featuredProjects.length)
-  }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0, rootMargin: '0px 0px -8% 0px' }
+    )
+
+    cards.forEach((card) => observer.observe(card))
+    return () => observer.disconnect()
+  }, [activeCategory, sectionRef])
 
   const filteredMoreProjects =
     activeCategory === 'All'
@@ -307,147 +321,128 @@ export default function Projects() {
       : moreProjects.filter((p) => p.category === activeCategory)
 
   return (
-    <section id="projects" className="px-6 py-20 max-w-6xl mx-auto relative">
+    <section ref={sectionRef} id="projects" className="reveal-section px-6 py-20 max-w-6xl mx-auto relative">
       <SectionHeader title="Projects" />
 
-      {/* HEADER CAROUSEL: Judul & Tombol Navigasi Panah */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <h2 className="text-xl font-black text-[#1F3A5F] tracking-tight">
-            {t('Featured')} <span className="text-[#3D5A80]">{t('Showcase')}</span>
+      <div className="reveal-item grid grid-cols-1 lg:grid-cols-[minmax(10rem,0.7fr)_minmax(0,2fr)] gap-6 lg:gap-8 mb-16">
+        <div className="flex flex-col items-start lg:pt-5">
+          <h2 className="text-2xl sm:text-3xl font-black text-[#16264A] tracking-tight leading-tight">
+            {t('Featured')}<br />
+            <span className="text-[#4A5C8A]">{t('Showcase')}</span>
           </h2>
-          <p className="text-xs text-slate-500">
-            {t('Geser kartu atau pilih titik navigasi untuk menjelajah proyek lain.')}
+          <p className="text-xs text-slate-500 mt-3 max-w-xs">
+            {language === 'ID'
+              ? 'Jelajahi proyek pilihan dan lihat detail setiap karya.'
+              : 'Explore selected projects and view the details behind each one.'}
           </p>
-        </div>
-
-        {/* Tombol Geser Kiri / Kanan */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handlePrevSlide}
-            className="w-9 h-9 rounded-full bg-white border border-slate-200 hover:bg-[#1F3A5F] hover:text-white text-[#1F3A5F] flex items-center justify-center transition-all cursor-pointer shadow-xs"
-            title="Previous Project"
-          >
-            ◀
-          </button>
-          <button
-            onClick={handleNextSlide}
-            className="w-9 h-9 rounded-full bg-white border border-slate-200 hover:bg-[#1F3A5F] hover:text-white text-[#1F3A5F] flex items-center justify-center transition-all cursor-pointer shadow-xs"
-            title="Next Project"
-          >
-            ▶
-          </button>
-        </div>
-      </div>
-
-      {/* FEATURED PROJECT SLIDER CARD */}
-      <div className="relative rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-md overflow-hidden mb-8 transition-all duration-300">
-
-        {/* GAMBAR PREVIEW UTAMA PNG DI ATAS KARTU PROYEK */}
-        <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 mb-6 group">
-          <img
-            src={currentProject.mainImage}
-            alt={currentProject.name}
-            className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
-            onError={(e) => {
-              e.target.src = '/images/Vincen Photo.png'
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent" />
-
-          {/* Badge Kategori & Video Overlay */}
-          <div className="absolute top-3 left-3 flex items-center gap-2">
-            <span className="text-xs font-bold text-[#1F3A5F] bg-white/90 backdrop-blur-md border border-slate-200 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-xs">
-              <span>{currentProject.icon}</span>
-              {t(currentProject.category)}
-            </span>
-          </div>
-
-          {currentProject.videoUrl && (
-            <button
-              type="button"
-              onClick={() => setSelectedVideo({ url: currentProject.videoUrl, name: currentProject.name })}
-              className="absolute bottom-3 right-3 text-xs bg-[#1F3A5F] hover:bg-[#3D5A80] text-white font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-sm transition-all shadow-md cursor-pointer"
-            >
-              <span>▶</span> {language === 'ID' ? 'Putar Demo Video' : 'Play Video Demo'}
-            </button>
-          )}
-        </div>
-
-        {/* DETAILS PROYEK */}
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
-          <div>
-            <h3 className="text-lg font-bold text-[#1F3A5F] mb-2">
-              {currentProject.name}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
-              {language === 'ID'
-                ? currentProject.desc
-                  .replace('Automated the end-to-end hiring workflow', 'Mengotomatiskan alur rekrutmen end-to-end')
-                  .replace('Built end-to-end automated pipelines', 'Membangun pipeline otomatis end-to-end')
-                  .replace('Automated 18-month rolling calculations', 'Mengotomatiskan kalkulasi rolling 18 bulan')
-                  .replace('A Discord bot for searching and analyzing', 'Bot Discord untuk mencari dan menganalisis')
-                : currentProject.desc}
-            </p>
-          </div>
-
           <a
-            href={currentProject.link}
-            target="_blank"
-            rel="noreferrer"
-            className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 border border-slate-200 hover:bg-[#1F3A5F] hover:text-white hover:border-[#1F3A5F] text-xs font-semibold text-[#1F3A5F] transition-all shadow-2xs"
+            href="#more-projects"
+            className="warm-button mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
           >
-            <span>GitHub Repo</span>
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
+            {language === 'ID' ? 'Lihat Semua' : 'See All'}
+            <span aria-hidden="true">↗</span>
           </a>
         </div>
 
-        {/* TAGS TECH STACK & BUTTON GALERI */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-slate-100">
-          <div className="flex flex-wrap gap-1.5">
-            {currentProject.tags.map((tag, idx) => (
-              <span
-                key={tag}
-                className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border shadow-2xs ${
-                  tagColorMap[currentProject.tagColors[idx]] || tagColorMap.gray
-                }`}
+        <div className="featured-projects-scroll hero-surface rounded-[1.75rem] border border-[#F6DCC6] p-3 sm:p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {featuredProjects.map((project) => (
+              <article
+                key={project.id}
+                className="project-reveal group soft-card flex min-w-0 flex-col rounded-[1.5rem] p-3.5 sm:p-4 shadow-sm transition-shadow hover:shadow-lg hover:shadow-orange-900/10"
               >
-                {tag}
-              </span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedGalleryProject(project)}
+                  className="relative mb-4 block aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#FFF7F0] text-left"
+                  aria-label={`${language === 'ID' ? 'Buka galeri' : 'Open gallery'}: ${project.name}`}
+                >
+                  <img
+                    src={project.mainImage}
+                    alt={project.name}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onError={(e) => {
+                      e.currentTarget.src = '/images/Vincen Photo.png'
+                    }}
+                  />
+                  <span className="absolute left-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full border border-white/70 bg-white/90 px-2.5 py-1 text-[10px] font-bold text-[#16264A] shadow-sm backdrop-blur">
+                    <span aria-hidden="true">{project.icon}</span>
+                    {t(project.category)}
+                  </span>
+                </button>
+
+                <div className="flex flex-1 flex-col">
+                  <div className="mb-3 flex items-start justify-between gap-2">
+                    <h3 className="text-sm font-bold leading-snug text-[#16264A]">
+                      {project.name}
+                    </h3>
+                    <span className="shrink-0 text-[10px] text-slate-400">
+                      {project.images.length} {language === 'ID' ? 'gambar' : 'images'}
+                    </span>
+                  </div>
+                  <p className="featured-project-desc mb-3 text-[11px] leading-relaxed text-slate-600">
+                    {language === 'ID'
+                      ? project.desc
+                        .replace('Automated the end-to-end hiring workflow', 'Mengotomatiskan alur rekrutmen end-to-end')
+                        .replace('Built end-to-end automated pipelines', 'Membangun pipeline otomatis end-to-end')
+                        .replace('Automated 18-month rolling calculations', 'Mengotomatiskan kalkulasi rolling 18 bulan')
+                        .replace('A Discord bot for searching and analyzing', 'Bot Discord untuk mencari dan menganalisis')
+                      : project.desc}
+                  </p>
+
+                  <div className="mt-auto flex flex-wrap gap-1.5">
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <span
+                        key={tag}
+                        className="project-tag inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[9px] font-semibold"
+                      >
+                        {projectToolLogos[tag] && (
+                          <img src={projectToolLogos[tag]} alt="" className="h-3 w-3 object-contain" />
+                        )}
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedGalleryProject(project)}
+                      className="text-[10px] font-bold text-[#4A5C8A] transition-colors hover:text-[#16264A]"
+                    >
+                      📷 {language === 'ID' ? 'Lihat Galeri' : 'View Gallery'}
+                    </button>
+                    <div className="flex items-center gap-3">
+                      {project.videoUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedVideo({ url: project.videoUrl, name: project.name })}
+                          className="text-[10px] font-bold text-[#4A5C8A] transition-colors hover:text-[#16264A]"
+                        >
+                          ▶ {language === 'ID' ? 'Demo' : 'Demo'}
+                        </button>
+                      )}
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 text-[10px] font-bold text-[#16264A] transition-colors hover:text-[#F97316]"
+                      >
+                        GitHub
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
-
-          <button
-            type="button"
-            onClick={() => setSelectedGalleryProject(currentProject)}
-            className="text-xs text-[#3D5A80] hover:text-[#1F3A5F] flex items-center gap-1.5 font-bold transition-colors cursor-pointer"
-          >
-            <span>📷 {language === 'ID' ? 'Lihat Galeri Lengkap' : 'View Full Gallery'} ({currentProject.images ? currentProject.images.length : 0})</span>
-          </button>
         </div>
       </div>
 
-      {/* INDIKATOR NAVIGASI DOTS SLIDER */}
-      <div className="flex justify-center items-center gap-2 mb-16">
-        {featuredProjects.map((p, idx) => (
-          <button
-            key={p.id}
-            onClick={() => setActiveIndex(idx)}
-            className={`h-2.5 rounded-full transition-all cursor-pointer ${
-              activeIndex === idx
-                ? 'w-8 bg-[#1F3A5F]'
-                : 'w-2.5 bg-slate-300 hover:bg-slate-400'
-            }`}
-            title={p.name}
-          />
-        ))}
-      </div>
-
       {/* MORE PROJECTS SECTION */}
-      <div className="pt-8 border-t border-slate-200">
-        <h3 className="text-base font-bold text-[#1F3A5F] mb-1">{t('More Projects')}</h3>
+      <div id="more-projects" className="reveal-item pt-8 border-t border-slate-200">
+        <h3 className="text-base font-bold text-[#16264A] mb-1">{t('More Projects')}</h3>
         <p className="text-xs text-slate-500 mb-6">
           {t('Explore additional technical domain projects linked directly to GitHub repositories.')}
         </p>
@@ -460,8 +455,8 @@ export default function Projects() {
               onClick={() => setActiveCategory(cat)}
               className={`text-xs px-3.5 py-1.5 rounded-full transition-all border cursor-pointer ${
                 activeCategory === cat
-                  ? 'bg-[#1F3A5F] text-white border-[#1F3A5F] font-semibold shadow-xs'
-                  : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-[#1F3A5F]'
+                  ? 'bg-[#F97316] text-white border-[#F97316] font-semibold shadow-sm shadow-orange-500/25'
+                  : 'bg-white text-slate-600 border-[#F0E4DA] hover:bg-[#FFEDD5]/60 hover:text-[#F97316]'
               }`}
             >
               {t(cat)}
@@ -477,17 +472,17 @@ export default function Projects() {
               href={item.githubUrl}
               target="_blank"
               rel="noreferrer"
-              className="group block p-4 rounded-2xl bg-white border border-slate-200 hover:border-[#3D5A80] hover:shadow-md transition-all duration-300"
+              className="project-reveal group soft-card block p-4 rounded-2xl hover:border-[#F97316] hover:shadow-lg hover:shadow-orange-500/10 transition-all duration-300"
             >
               <div className="flex justify-between items-start mb-2">
-                <span className="text-[10px] font-bold text-[#3D5A80] uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-[#4A5C8A] uppercase tracking-wider">
                   {t(item.category)}
                 </span>
-                <svg className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#1F3A5F] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#16264A] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </div>
-              <h4 className="text-xs font-bold text-slate-900 mb-1 group-hover:text-[#1F3A5F] transition-colors">
+              <h4 className="text-xs font-bold text-slate-900 mb-1 group-hover:text-[#16264A] transition-colors">
                 {item.title}
               </h4>
               <p className="text-[11px] text-slate-600 mb-3 leading-relaxed">
@@ -499,7 +494,10 @@ export default function Projects() {
               </p>
               <div className="flex flex-wrap gap-1">
                 {item.tags.map((tag) => (
-                  <span key={tag} className="text-[9px] text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                  <span key={tag} className="project-tag inline-flex items-center gap-1.5 text-[9px] px-2 py-0.5 rounded-full border">
+                    {projectToolLogos[tag] && (
+                      <img src={projectToolLogos[tag]} alt="" className="h-3 w-3 object-contain" />
+                    )}
                     {tag}
                   </span>
                 ))}
@@ -539,12 +537,12 @@ function VideoModalContent({ selectedVideo, onClose, language }: VideoModalProps
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
-          <h3 className="text-sm font-bold text-[#1F3A5F]">
+          <h3 className="text-sm font-bold text-[#16264A]">
             {selectedVideo.name} — {language === 'ID' ? 'Demo Animasi' : 'Demo Animation'}
           </h3>
           <button
             onClick={onClose}
-            className="text-slate-500 hover:text-[#1F3A5F] text-xs bg-white hover:bg-slate-100 border border-slate-200 w-7 h-7 rounded-full flex items-center justify-center transition-colors cursor-pointer shadow-xs"
+            className="text-slate-500 hover:text-[#16264A] text-xs bg-white hover:bg-slate-100 border border-slate-200 w-7 h-7 rounded-full flex items-center justify-center transition-colors cursor-pointer shadow-xs"
           >
             ✕
           </button>
@@ -585,11 +583,11 @@ function VideoModal({ selectedVideo, onClose, language }: VideoModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-[#1F3A5F] mb-2">Video Playback Error</h3>
+            <h3 className="text-lg font-bold text-[#16264A] mb-2">Video Playback Error</h3>
             <p className="text-sm text-slate-600 mb-4">Unable to load the video. The file may be missing or in an unsupported format.</p>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-[#1F3A5F] text-white text-sm font-semibold rounded-xl hover:bg-[#3D5A80] transition-colors cursor-pointer"
+              className="px-4 py-2 bg-[#16264A] text-white text-sm font-semibold rounded-xl hover:bg-[#4A5C8A] transition-colors cursor-pointer"
             >
               Close
             </button>
