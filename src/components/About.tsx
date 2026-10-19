@@ -372,10 +372,10 @@ export default function About() {
         >
           <div className="reveal-stagger grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
-            { title: t('Data Engineer'), icon: '⚙️', desc: t('Dataform, Big Query, Cloud Run') },
-            { title: t('Data Analytics'), icon: '📊', desc: t('Data Cleaning, Analysis, and Visualization') },
-            { title: t('Business Intelligence'), icon: '📈', desc: t('Power BI, Looker Studio, dashboards & executive reporting') },
-            { title: t('Analytics Engineer'), icon: '⚙️', desc: t('dbt, Dataform, SQL optimization, data quality & testing') },
+            { title: t('GCP Data Engineer'), icon: '⚙️', desc: t('GCP Ingestion (Pub/Sub), BigQuery Warehousing, Dataform Modeling, & Cloud Orchestration') },
+            { title: t('Data Analytics'), icon: '📊', desc: t('Descriptive, Diagnostic, Predictive, and Prescriptive Analytics') },
+            { title: t('Business Intelligence'), icon: '📈', desc: t('Operational, Tactical, Strategic Dashboards and Conversational Analytics') },
+            { title: t('Analytics Engineer'), icon: '⚙️', desc: t('Data Modeling (dbt/Dataform), SQLX Optimization, Data Quality Testing, & CI/CD Deployment') },
             { title: t('Supply Chain Analytics'), icon: '📦', desc: t('Demand forecasting, inventory optimization, S&OP, MRP') },
             { title: t('Demand Planner'), icon: '🎯', desc: t('Statistical forecasting, consensus planning, bias reduction') },
           ].map((service, index) => (
