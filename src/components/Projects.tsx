@@ -182,6 +182,7 @@ const categories = ['All', 'Business Intelligence', 'Data Engineering', 'Data Sc
 
 // Modal Component untuk Slideshow Galeri Foto Proyek
 function ImageSlideshowModalContent({ project, onClose }: ImageSlideshowModalProps) {
+  const { t } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
 
   if (!project || !project.images || project.images.length === 0) return null
@@ -209,7 +210,9 @@ function ImageSlideshowModalContent({ project, onClose }: ImageSlideshowModalPro
           <div>
             <h3 className="text-sm font-bold text-[#16264A]">{project.name}</h3>
             <p className="text-[10px] text-slate-500">
-              Image {currentIndex + 1} of {project.images.length}
+              {t('Image {current} of {total}')
+                .replace('{current}', String(currentIndex + 1))
+                .replace('{total}', String(project.images.length))}
             </p>
           </div>
           <button
@@ -273,10 +276,11 @@ function ImageSlideshowModalContent({ project, onClose }: ImageSlideshowModalPro
  * Wraps the image slideshow content with error handling
  */
 function ImageSlideshowModal({ project, onClose }: ImageSlideshowModalProps) {
+  const { t } = useLanguage()
   return (
     <ErrorBoundary
-      title="Image Gallery Error"
-      message="Unable to load the project images. Please try again."
+      title={t('Image Gallery Error')}
+      message={t('Unable to load the project images. Please try again.')}
       fallback={(error, errorInfo) => (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-fadeIn"
@@ -288,13 +292,13 @@ function ImageSlideshowModal({ project, onClose }: ImageSlideshowModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-[#16264A] mb-2">Image Gallery Error</h3>
-            <p className="text-sm text-slate-600 mb-4">Unable to load the project images. Please try again.</p>
+            <h3 className="text-lg font-bold text-[#16264A] mb-2">{t('Image Gallery Error')}</h3>
+            <p className="text-sm text-slate-600 mb-4">{t('Unable to load the project images. Please try again.')}</p>
             <button
               onClick={onClose}
               className="px-4 py-2 bg-[#16264A] text-white text-sm font-semibold rounded-xl hover:bg-[#4A5C8A] transition-colors cursor-pointer"
             >
-              Close
+              {t('Close')}
             </button>
           </div>
         </div>
@@ -353,15 +357,13 @@ export default function Projects() {
             <span className="text-[#4A5C8A]">{t('Showcase')}</span>
           </h2>
           <p className="text-xs text-slate-500 mt-3 max-w-xs">
-            {language === 'ID'
-              ? 'Jelajahi proyek pilihan dan lihat detail setiap karya.'
-              : 'Explore selected projects and view the details behind each one.'}
+            {t('Explore selected projects and view the details behind each one.')}
           </p>
           <a
             href="#more-projects"
             className="warm-button mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
           >
-            {language === 'ID' ? 'Lihat Semua' : 'See All'}
+            {t('See All')}
             <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -377,7 +379,7 @@ export default function Projects() {
                   type="button"
                   onClick={() => setSelectedGalleryProject(project)}
                   className="relative mb-4 block aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#FFF7F0] text-left"
-                  aria-label={`${language === 'ID' ? 'Buka galeri' : 'Open gallery'}: ${project.name}`}
+                  aria-label={`${t('Open gallery')}: ${project.name}`}
                 >
                   <img
                     src={project.mainImage}
@@ -399,17 +401,11 @@ export default function Projects() {
                       {project.name}
                     </h3>
                     <span className="shrink-0 text-[10px] text-slate-400">
-                      {project.images.length} {language === 'ID' ? 'gambar' : 'images'}
+                      {project.images.length} {t('images')}
                     </span>
                   </div>
                   <p className="featured-project-desc mb-3 text-[11px] leading-relaxed text-slate-600">
-                    {language === 'ID'
-                      ? project.desc
-                        .replace('Automated the end-to-end hiring workflow', 'Mengotomatiskan alur rekrutmen end-to-end')
-                        .replace('Built end-to-end automated pipelines', 'Membangun pipeline otomatis end-to-end')
-                        .replace('Automated 18-month rolling calculations', 'Mengotomatiskan kalkulasi rolling 18 bulan')
-                        .replace('A Discord bot for searching and analyzing', 'Bot Discord untuk mencari dan menganalisis')
-                      : project.desc}
+                    {t(project.desc)}
                   </p>
 
                   <div className="mt-auto flex flex-wrap gap-1.5">
@@ -432,7 +428,7 @@ export default function Projects() {
                       onClick={() => setSelectedGalleryProject(project)}
                       className="text-[10px] font-bold text-[#4A5C8A] transition-colors hover:text-[#16264A]"
                     >
-                      📷 {language === 'ID' ? 'Lihat Galeri' : 'View Gallery'}
+                      📷 {t('View Gallery')}
                     </button>
                     <div className="flex items-center gap-3">
                       {project.videoUrl && (
@@ -441,7 +437,7 @@ export default function Projects() {
                           onClick={() => setSelectedVideo({ url: project.videoUrl, name: project.name })}
                           className="text-[10px] font-bold text-[#4A5C8A] transition-colors hover:text-[#16264A]"
                         >
-                          ▶ {language === 'ID' ? 'Demo' : 'Demo'}
+                          ▶ {t('Demo')}
                         </button>
                       )}
                       <a
@@ -508,11 +504,7 @@ export default function Projects() {
                 {item.title}
               </h4>
               <p className="text-[11px] text-slate-600 mb-3 leading-relaxed">
-                {language === 'ID'
-                  ? item.desc.replace('Comprehensive overview', 'Ikhtisar komprehensif')
-                    .replace('An end-to-end predictive analytics workflow', 'Workflow analitik prediktif end-to-end')
-                    .replace('OEE calculation and streaming data ingestion', 'Kalkulasi OEE dan ingestion data streaming')
-                  : item.desc}
+                {t(item.desc)}
               </p>
               <div className="flex flex-wrap gap-1">
                 {item.tags.map((tag) => (
@@ -560,7 +552,7 @@ function VideoModalContent({ selectedVideo, onClose, language }: VideoModalProps
       >
         <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
           <h3 className="text-sm font-bold text-[#16264A]">
-            {selectedVideo.name} — {language === 'ID' ? 'Demo Animasi' : 'Demo Animation'}
+            {selectedVideo.name} — {t('Demo Animation')}
           </h3>
           <button
             onClick={onClose}
@@ -590,10 +582,11 @@ function VideoModalContent({ selectedVideo, onClose, language }: VideoModalProps
  * Wraps the video modal content with error handling
  */
 function VideoModal({ selectedVideo, onClose, language }: VideoModalProps) {
+  const { t } = useLanguage()
   return (
     <ErrorBoundary
-      title="Video Playback Error"
-      message="Unable to load the video. The file may be missing or in an unsupported format."
+      title={t('Video Playback Error')}
+      message={t('Unable to load the video. The file may be missing or in an unsupported format.')}
       fallback={(error, errorInfo) => (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-fadeIn"
@@ -605,13 +598,13 @@ function VideoModal({ selectedVideo, onClose, language }: VideoModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-[#16264A] mb-2">Video Playback Error</h3>
-            <p className="text-sm text-slate-600 mb-4">Unable to load the video. The file may be missing or in an unsupported format.</p>
+            <h3 className="text-lg font-bold text-[#16264A] mb-2">{t('Video Playback Error')}</h3>
+            <p className="text-sm text-slate-600 mb-4">{t('Unable to load the video. The file may be missing or in an unsupported format.')}</p>
             <button
               onClick={onClose}
               className="px-4 py-2 bg-[#16264A] text-white text-sm font-semibold rounded-xl hover:bg-[#4A5C8A] transition-colors cursor-pointer"
             >
-              Close
+              {t('Close')}
             </button>
           </div>
         </div>

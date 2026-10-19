@@ -288,7 +288,7 @@ export default function About() {
                   {t(label)}
                 </h3>
                 <p className="skill-card-meta text-[10px] mt-0.5">
-                  {totalSkills} Skills
+                  {totalSkills} {t('Skills')}
                 </p>
               </div>
             </div>

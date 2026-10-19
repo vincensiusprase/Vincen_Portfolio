@@ -73,9 +73,9 @@ export default function Navbar() {
             <button
               type="button"
               onClick={toggleTheme}
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-label={t(theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode')}
               aria-pressed={theme === 'dark'}
-              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              title={t(theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode')}
               className="w-9 h-9 rounded-full grid place-items-center border border-[#F0E4DA] bg-white text-[#16264A] hover:border-[#F97316] transition-colors"
             >
               {theme === 'dark' ? (
@@ -123,7 +123,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              aria-label="Toggle menu"
+              aria-label={t('Toggle menu')}
               className="md:hidden w-9 h-9 rounded-xl grid place-items-center border border-[#F0E4DA] bg-white text-[#16264A]"
             >
               <span className="text-base leading-none">{open ? '✕' : '☰'}</span>

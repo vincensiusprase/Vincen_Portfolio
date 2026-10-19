@@ -82,10 +82,11 @@ function PdfViewerModalContent({ cert, onClose }: PdfViewerModalContentProps) {
  * Wraps the PDF viewer content with error handling
  */
 function PdfViewerModal({ cert, onClose }: PdfViewerModalProps) {
+  const { t } = useLanguage()
   return (
     <ErrorBoundary
-      title="PDF Preview Error"
-      message="Unable to load the PDF certificate. The file may be missing or corrupted."
+      title={t('PDF Preview Error')}
+      message={t('Unable to load the PDF certificate. The file may be missing or corrupted.')}
       fallback={(error, errorInfo) => (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in"
@@ -97,13 +98,13 @@ function PdfViewerModal({ cert, onClose }: PdfViewerModalProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-[#16264A] mb-2">PDF Preview Error</h3>
-            <p className="text-sm text-slate-600 mb-4">Unable to load the PDF certificate. The file may be missing or corrupted.</p>
+            <h3 className="text-lg font-bold text-[#16264A] mb-2">{t('PDF Preview Error')}</h3>
+            <p className="text-sm text-slate-600 mb-4">{t('Unable to load the PDF certificate. The file may be missing or corrupted.')}</p>
             <button
               onClick={onClose}
               className="px-4 py-2 bg-[#16264A] text-white text-sm font-semibold rounded-xl hover:bg-[#4A5C8A] transition-colors cursor-pointer"
             >
-              Close
+              {t('Close')}
             </button>
           </div>
         </div>

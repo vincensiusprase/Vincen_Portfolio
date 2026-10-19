@@ -46,6 +46,7 @@ const idTranslations: Translations = {
   Demo: 'Demo',
   'More Projects': 'Proyek Lainnya',
   All: 'Semua',
+  more: 'lainnya',
   'Certificates & ': 'Sertifikat & ',
   'Continuous Learning': 'Pembelajaran Berkelanjutan',
   Skills: 'Keahlian',
@@ -59,7 +60,12 @@ const idTranslations: Translations = {
   'a company that wants to reduce waste and manual work through data and AI, and needs someone who understands both the operations and the technology to make it happen.': 'perusahaan yang ingin mengurangi pemborosan dan pekerjaan manual melalui data dan AI, dan membutuhkan seseorang yang memahami baik operasi maupun teknologi untuk mewujudkannya.',
   'Open to conversations on data-driven operations, supply chain analytics, and manufacturing digital transformation.': 'Terbuka untuk diskusi tentang operasi berbasis data, analitik rantai pasokan, dan transformasi digital manufaktur.',
   'Core Services': 'Layanan Utama',
-  'Services I can provide to help your business grow' : 'Layanan yang dapat saya berikan untuk membantu bisnis Anda berkembang',
+  'Services I can provide to help your business grow': 'Layanan yang dapat saya berikan untuk membantu bisnis Anda berkembang',
+  'GCP Data Engineer': 'Data Engineer GCP',
+  'GCP Ingestion (Pub/Sub), BigQuery Warehousing, Dataform Modeling, & Cloud Orchestration': 'Ingestion GCP (Pub/Sub), Data Warehouse BigQuery, Pemodelan Dataform, & Orkestrasi Cloud',
+  'Descriptive, Diagnostic, Predictive, and Prescriptive Analytics': 'Analitik Deskriptif, Diagnostik, Prediktif, dan Preskriptif',
+  'Operational, Tactical, Strategic Dashboards and Conversational Analytics': 'Dashboard Operasional, Taktis, Strategis dan Analitik Percakapan',
+  'Data Modeling (dbt/Dataform), SQLX Optimization, Data Quality Testing, & CI/CD Deployment': 'Pemodelan Data (dbt/Dataform), Optimasi SQLX, Pengujian Kualitas Data, & Deployment CI/CD',
   'Data Analytics': 'Analisis Data',
   'Business Intelligence': 'Business Intelligence',
   'Analytics Engineer': 'Analytics Engineer',
@@ -73,6 +79,7 @@ const idTranslations: Translations = {
   '💡 Scroll horizontal untuk melihat semua layanan': '💡 Scroll horizontal untuk melihat semua layanan',
   'Data Analysis & Programming': 'Analisis Data & Pemrograman',
     'DevOps & Version Control': 'DevOps & Kontrol Versi',
+    'Data Operations': 'Operasi Data',
     'Google Cloud Platform (GCP)': 'Google Cloud Platform (GCP)',
     'BI, Visualization & Spreadsheets': 'BI, Visualisasi & Spreadsheet',
     'AI, Automation & Low-Code': 'AI, Otomasi & Low-Code',
@@ -171,7 +178,58 @@ const idTranslations: Translations = {
         'Tanyakan sesuatu... (- + spasi untuk bullet)':
           'Tanyakan sesuatu... (- + spasi untuk bullet)',
         'Kirim': 'Kirim',
-                'NVIDIA Nemotron sedang berpikir...': 'NVIDIA Nemotron sedang berpikir...',
+        // Hero & Navbar
+        'Supply Chain | Data | Automation & AI': 'Supply Chain | Data | Otomasi & AI',
+        'Hire Me': 'Rekrut Saya',
+        'Certified Associate Data Scientist, Data Analyst, and Industry 4.0 Transformation Manager by BNSP': 'Bersertifikat Associate Data Scientist, Data Analyst, dan Industry 4.0 Transformation Manager dari BNSP',
+        // Accessibility labels
+        'Switch to light mode': 'Ganti ke mode terang',
+        'Switch to dark mode': 'Ganti ke mode gelap',
+        'Toggle menu': 'Buka/tutup menu',
+        // Project categories
+        'Data Architecture': 'Arsitektur Data',
+        'AI & Google Workspace': 'AI & Google Workspace',
+        'Web App App Script': 'Web App Apps Script',
+        'Data Engineering': 'Rekayasa Data',
+        'Data Science': 'Data Science',
+        'AI Engineering': 'Rekayasa AI',
+        // Project descriptions
+        'Automated the end-to-end hiring workflow using Document AI, DeepSeek, Cloud Run, and Google Workspace, achieving total monthly cost savings of IDR 6.3 million.':
+          'Mengotomatiskan alur rekrutmen end-to-end menggunakan Document AI, DeepSeek, Cloud Run, dan Google Workspace, dengan penghematan biaya bulanan sebesar Rp6,3 juta.',
+        'Built end-to-end automated data pipelines, data models, and CI/CD workflows to ingest data from multiple sources into BigQuery and Looker Studio. Implemented Row-Level Security (RLS) for granular access control and developed Conversational Analytics to enable deep-dive analysis.':
+          'Membangun pipeline data otomatis end-to-end, model data, dan alur kerja CI/CD untuk mengintegrasikan data dari berbagai sumber ke BigQuery dan Looker Studio. Menerapkan Row-Level Security (RLS) untuk kontrol akses granular dan mengembangkan Analitik Percakapan untuk memungkinkan analisis mendalam.',
+        'A Discord bot for searching and analyzing Failure Mode and Effects Analysis (FMEA) data. It retrieves FMEA records and corrective steps from Vertex AI Discovery Engine, then answers using a resilient LLM fallback architecture: Nemotron is tried first, and if that request fails the bot automatically falls back to DeepSeek, keeping the bot responsive even when the primary model is unavailable. Per-session conversation history is stored in Google Cloud Firestore.':
+          'Bot Discord untuk mencari dan menganalisis data Failure Mode and Effects Analysis (FMEA). Bot mengambil catatan FMEA dan langkah korektif dari Vertex AI Discovery Engine, lalu menjawab menggunakan arsitektur fallback LLM yang tangguh: Nemotron dicoba terlebih dahulu, dan jika gagal bot otomatis beralih ke DeepSeek sehingga tetap responsif meskipun model utama tidak tersedia. Riwayat percakapan per sesi disimpan di Google Cloud Firestore.',
+        'Inventory management web app built with Google App Script, Inbound and Outbound inventory tracking, and automated safety stock calculations using RFM analysis and customer tiering.':
+          'Aplikasi web manajemen persediaan yang dibangun dengan Google Apps Script, pelacakan stok masuk dan keluar, serta perhitungan safety stock otomatis menggunakan analisis RFM dan segmentasi pelanggan.',
+        'Comprehensive overview of employee performance, combining key HR metrics into one intuitive platform.':
+          'Ikhtisar komprehensif kinerja karyawan, menggabungkan metrik HR utama ke dalam satu platform yang intuitif.',
+        'Comprehensive overview of procurement activities, combining key procurement metrics into one intuitive platform.':
+          'Ikhtisar komprehensif aktivitas pengadaan, menggabungkan metrik pengadaan utama ke dalam satu platform yang intuitif.',
+        'OEE calculation and streaming data ingestion from Pub Sub to BigQuery using Dataform and Looker Studio.':
+          'Perhitungan OEE dan ingestion data streaming dari Pub Sub ke BigQuery menggunakan Dataform dan Looker Studio.',
+        'An end-to-end predictive analytics workflow built on KNIME Analytics Platform to forecast residential heating oil consumption.':
+          'Alur kerja analitik prediktif end-to-end di KNIME Analytics Platform untuk meramalkan konsumsi minyak pemanas rumah tangga.',
+        // Projects - misc UI
+        'Image {current} of {total}': 'Gambar {current} dari {total}',
+    'Explore selected projects and view the details behind each one.': 'Jelajahi proyek pilihan dan lihat detail setiap karya.',
+    'See All': 'Lihat Semua',
+    'images': 'gambar',
+    'View Gallery': 'Lihat Galeri',
+        'Image Gallery Error': 'Gagal Memuat Galeri Gambar',
+        'Unable to load the project images. Please try again.': 'Gagal memuat gambar proyek. Silakan coba lagi.',
+        'Video Playback Error': 'Gagal Memutar Video',
+        'Unable to load the video. The file may be missing or in an unsupported format.': 'Gagal memuat video. File mungkin tidak ada atau formatnya tidak didukung.',
+        'Demo Animation': 'Demo Animasi',
+        'Open gallery': 'Buka galeri',
+        // PDF viewer
+        'PDF Preview Error': 'Gagal Pratinjau PDF',
+        'Unable to load the PDF certificate. The file may be missing or corrupted.': 'Gagal memuat sertifikat PDF. File mungkin tidak ada atau rusak.',
+        // Error boundary
+        'Something went wrong': 'Terjadi kesalahan',
+        'Unable to load content. Please try again.': 'Gagal memuat konten. Silakan coba lagi.',
+        'Try Again': 'Coba Lagi',
+                    'NVIDIA Nemotron sedang berpikir...': 'NVIDIA Nemotron sedang berpikir...',
       }
 
 const enTranslations: Translations = {
@@ -209,12 +267,65 @@ const enTranslations: Translations = {
   'Show More': 'Show More',
   Demo: 'Demo',
   'More Projects': 'More Projects',
+  more: 'more',
   All: 'All',
   'Certificates & ': 'Certificates & ',
   'Continuous Learning': 'Continuous Learning',
   Skills: 'Skills',
   'Skills & Expertise': 'Skills & Expertise',
   '💡 Klik kartu untuk melihat detail': '💡 Click a card to view details',
+  '💡 Scroll horizontal untuk melihat semua layanan': '💡 Scroll horizontally to see all services',
+  'Data Operations': 'Data Operations',
+  'GCP Data Engineer': 'GCP Data Engineer',
+  'GCP Ingestion (Pub/Sub), BigQuery Warehousing, Dataform Modeling, & Cloud Orchestration': 'GCP Ingestion (Pub/Sub), BigQuery Warehousing, Dataform Modeling, & Cloud Orchestration',
+  'Services I can provide to help your business grow': 'Services I can provide to help your business grow',
+  'Descriptive, Diagnostic, Predictive, and Prescriptive Analytics': 'Descriptive, Diagnostic, Predictive, and Prescriptive Analytics',
+  'Operational, Tactical, Strategic Dashboards and Conversational Analytics': 'Operational, Tactical, Strategic Dashboards and Conversational Analytics',
+  'Data Modeling (dbt/Dataform), SQLX Optimization, Data Quality Testing, & CI/CD Deployment': 'Data Modeling (dbt/Dataform), SQLX Optimization, Data Quality Testing, & CI/CD Deployment',
+  'Supply Chain | Data | Automation & AI': 'Supply Chain | Data | Automation & AI',
+  'Hire Me': 'Hire Me',
+  'Certified Associate Data Scientist, Data Analyst, and Industry 4.0 Transformation Manager by BNSP': 'Certified Associate Data Scientist, Data Analyst, and Industry 4.0 Transformation Manager by BNSP',
+  'Switch to light mode': 'Switch to light mode',
+  'Switch to dark mode': 'Switch to dark mode',
+  'Toggle menu': 'Toggle menu',
+  'Data Architecture': 'Data Architecture',
+  'AI & Google Workspace': 'AI & Google Workspace',
+  'Web App App Script': 'Web App Apps Script',
+  'Data Engineering': 'Data Engineering',
+  'Data Science': 'Data Science',
+  'AI Engineering': 'AI Engineering',
+  'Automated the end-to-end hiring workflow using Document AI, DeepSeek, Cloud Run, and Google Workspace, achieving total monthly cost savings of IDR 6.3 million.':
+    'Automated the end-to-end hiring workflow using Document AI, DeepSeek, Cloud Run, and Google Workspace, achieving total monthly cost savings of IDR 6.3 million.',
+  'Built end-to-end automated data pipelines, data models, and CI/CD workflows to ingest data from multiple sources into BigQuery and Looker Studio. Implemented Row-Level Security (RLS) for granular access control and developed Conversational Analytics to enable deep-dive analysis.':
+    'Built end-to-end automated data pipelines, data models, and CI/CD workflows to ingest data from multiple sources into BigQuery and Looker Studio. Implemented Row-Level Security (RLS) for granular access control and developed Conversational Analytics to enable deep-dive analysis.',
+  'A Discord bot for searching and analyzing Failure Mode and Effects Analysis (FMEA) data. It retrieves FMEA records and corrective steps from Vertex AI Discovery Engine, then answers using a resilient LLM fallback architecture: Nemotron is tried first, and if that request fails the bot automatically falls back to DeepSeek, keeping the bot responsive even when the primary model is unavailable. Per-session conversation history is stored in Google Cloud Firestore.':
+    'A Discord bot for searching and analyzing Failure Mode and Effects Analysis (FMEA) data. It retrieves FMEA records and corrective steps from Vertex AI Discovery Engine, then answers using a resilient LLM fallback architecture: Nemotron is tried first, and if that request fails the bot automatically falls back to DeepSeek, keeping the bot responsive even when the primary model is unavailable. Per-session conversation history is stored in Google Cloud Firestore.',
+  'Inventory management web app built with Google App Script, Inbound and Outbound inventory tracking, and automated safety stock calculations using RFM analysis and customer tiering.':
+    'Inventory management web app built with Google App Script, Inbound and Outbound inventory tracking, and automated safety stock calculations using RFM analysis and customer tiering.',
+  'Comprehensive overview of employee performance, combining key HR metrics into one intuitive platform.':
+    'Comprehensive overview of employee performance, combining key HR metrics into one intuitive platform.',
+  'Comprehensive overview of procurement activities, combining key procurement metrics into one intuitive platform.':
+    'Comprehensive overview of procurement activities, combining key procurement metrics into one intuitive platform.',
+  'OEE calculation and streaming data ingestion from Pub Sub to BigQuery using Dataform and Looker Studio.':
+    'OEE calculation and streaming data ingestion from Pub Sub to BigQuery using Dataform and Looker Studio.',
+  'An end-to-end predictive analytics workflow built on KNIME Analytics Platform to forecast residential heating oil consumption.':
+    'An end-to-end predictive analytics workflow built on KNIME Analytics Platform to forecast residential heating oil consumption.',
+  'Image {current} of {total}': 'Image {current} of {total}',
+  'Explore selected projects and view the details behind each one.': 'Explore selected projects and view the details behind each one.',
+  'See All': 'See All',
+  'images': 'images',
+  'View Gallery': 'View Gallery',
+  'Image Gallery Error': 'Image Gallery Error',
+  'Unable to load the project images. Please try again.': 'Unable to load the project images. Please try again.',
+  'Video Playback Error': 'Video Playback Error',
+  'Unable to load the video. The file may be missing or in an unsupported format.': 'Unable to load the video. The file may be missing or in an unsupported format.',
+  'Demo Animation': 'Demo Animation',
+  'Open gallery': 'Open gallery',
+  'PDF Preview Error': 'PDF Preview Error',
+  'Unable to load the PDF certificate. The file may be missing or corrupted.': 'Unable to load the PDF certificate. The file may be missing or corrupted.',
+  'Something went wrong': 'Something went wrong',
+  'Unable to load content. Please try again.': 'Unable to load content. Please try again.',
+  'Try Again': 'Try Again',
   Featured: 'Featured',
   Showcase: 'Showcase',
   '5+ years across supply chain, production operations, and data in manufacturing.': '5+ years across supply chain, production operations, and data in manufacturing.',
@@ -233,7 +344,6 @@ const enTranslations: Translations = {
   'dbt, Dataform, SQL optimization, data quality & testing': 'dbt, Dataform, SQL optimization, data quality & testing',
   'Demand forecasting, inventory optimization, S&OP, MRP': 'Demand forecasting, inventory optimization, S&OP, MRP',
   'Statistical forecasting, consensus planning, bias reduction': 'Statistical forecasting, consensus planning, bias reduction',
-  '💡 Scroll horizontal untuk melihat semua layanan': '💡 Scroll horizontally to see all services',
   'Data Analysis & Programming': 'Data Analysis & Programming',
   'DevOps & Version Control': 'DevOps & Version Control',
   'Google Cloud Platform (GCP)': 'Google Cloud Platform (GCP)',

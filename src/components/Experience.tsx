@@ -226,7 +226,7 @@ export default function Experience() {
               onClick={() => setShowAll((prev) => !prev)}
               className="text-xs font-semibold text-[#16264A] bg-[#FFEDD5]/60 hover:bg-[#FFEDD5] border border-[#FFD9A8] rounded-xl px-4 py-2 transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-2xs"
             >
-              <span>{showAll ? t('Show Less') : `${t('Show More')} (${experiences.length - 2} more)`}</span>
+              <span>{showAll ? t('Show Less') : `${t('Show More')} (${experiences.length - 2} ${t('more')})`}</span>
               <svg
                 className={`w-3.5 h-3.5 transform transition-transform duration-200 ${
                   showAll ? 'rotate-180' : ''

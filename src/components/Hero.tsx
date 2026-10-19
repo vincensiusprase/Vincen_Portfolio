@@ -139,7 +139,7 @@ export default function Hero() {
                 ))}
               </div>
               <p className="mt-3 text-sm font-medium leading-relaxed text-[#4A5C8A]">
-                Certified Associate Data Scientist, Data Analyst, and Industry 4.0 Transformation Manager by BNSP
+                {t('Certified Associate Data Scientist, Data Analyst, and Industry 4.0 Transformation Manager by BNSP')}
               </p>
             </div>
 
